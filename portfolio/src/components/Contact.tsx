@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CONTACT } from "@/lib/resumes";
 
 const LINKS = [
@@ -9,7 +10,7 @@ const LINKS = [
   },
   {
     label: "LinkedIn",
-    value: CONTACT.linkedin,
+    value: "haider-k-a9a144107",
     href: CONTACT.linkedinHref,
     external: true,
   },
@@ -21,8 +22,8 @@ const LINKS = [
   },
   {
     label: "Location",
-    value: CONTACT.location,
-    href: "https://maps.google.com/?q=Riyadh,Saudi+Arabia",
+    value: "Riyadh, Saudi Arabia",
+    href: "https://www.google.com/maps/search/?api=1&query=Riyadh%2C+Saudi+Arabia",
     external: true,
   },
 ];
@@ -33,6 +34,10 @@ export default function Contact() {
       <div className="wrap">
         <div className="contact-box">
           <div className="contact-intro">
+            <p className="status-chip">
+              <span className="status-dot" aria-hidden="true" />
+              Open to new roles
+            </p>
             <div className="section-head">
               <span className="idx">06</span>
               <h2>Contact</h2>
@@ -68,9 +73,11 @@ export default function Contact() {
         <p className="foot-note">
           // Built by Haider Khan — data pipeline, meet software ship.
         </p>
-        <p className="foot-note foot-colophon">
-          Next.js · IBM Plex · no tracking
-        </p>
+        <nav className="foot-links" aria-label="Footer">
+          <Link href="/resume/data-analyst">Data Analyst CV</Link>
+          <Link href="/resume/software-engineer">Software Engineer CV</Link>
+          <a href="#intro">Back to top ↑</a>
+        </nav>
       </div>
     </footer>
   );
