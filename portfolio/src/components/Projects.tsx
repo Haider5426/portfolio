@@ -2,21 +2,79 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { PROJECTS, type Track } from "@/lib/projects";
+import { PROJECTS, type Project, type Track } from "@/lib/projects";
 
 type Filter = "all" | Track;
 
 const FILTERS: { key: Filter; label: string }[] = [
   { key: "all", label: "All" },
   { key: "data", label: "Data & ML" },
-  { key: "sw", label: "Software" },
+  { key: "sw", label: "Software & Web" },
 ];
+
+function CardBody({ project }: { project: Project }) {
+  return (
+    <>
+      {project.image && (
+        <img
+          className="card-illustration"
+          src={project.image}
+          alt=""
+          width={400}
+          height={220}
+        />
+      )}
+      <div className="card-top">
+        <h3>{project.title}</h3>
+        <span className="card-metric">{project.metric}</span>
+      </div>
+      <p>{project.desc}</p>
+      {project.slug && (
+        <span className="card-cta" aria-hidden="true">
+          Read case study →
+        </span>
+      )}
+    </>
+  );
+}
+
+function ProjectCard({
+  project,
+  compact,
+}: {
+  project: Project;
+  compact?: boolean;
+}) {
+  const className = `card${compact ? " card-compact" : ""}`;
+
+  if (project.slug) {
+    return (
+      <Link
+        className={`${className} card-link`}
+        data-track={project.tracks[0]}
+        href={`/projects/${project.slug}`}
+        aria-label={`${project.title} — read case study`}
+      >
+        <CardBody project={project} />
+      </Link>
+    );
+  }
+
+  return (
+    <div className={className} data-track={project.tracks[0]}>
+      <CardBody project={project} />
+    </div>
+  );
+}
 
 export default function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
+
   const visible = PROJECTS.filter(
     (p) => filter === "all" || p.tracks.includes(filter)
   );
+  const featured = visible.filter((p) => p.featured);
+  const compact = visible.filter((p) => !p.featured);
 
   return (
     <section id="projects" className="alt">
@@ -44,53 +102,24 @@ export default function Projects() {
           ))}
         </div>
 
-        <div className="proj-grid">
-          {visible.map((project) => {
-            const body = (
-              <>
-                {project.image && (
-                  <img
-                    className="card-illustration"
-                    src={project.image}
-                    alt=""
-                    width={400}
-                    height={220}
-                  />
-                )}
-                <div className="card-top">
-                  <h3>{project.title}</h3>
-                  <span className="card-metric">{project.metric}</span>
-                </div>
-                <p>{project.desc}</p>
-                {project.slug && (
-                  <span className="card-cta" aria-hidden="true">
-                    Read case study →
-                  </span>
-                )}
-              </>
-            );
+        {featured.length > 0 && (
+          <div className="proj-grid">
+            {featured.map((p) => (
+              <ProjectCard key={p.title} project={p} />
+            ))}
+          </div>
+        )}
 
-            return project.slug ? (
-              <Link
-                className="card card-link"
-                data-track={project.tracks[0]}
-                href={`/projects/${project.slug}`}
-                key={project.title}
-                aria-label={`${project.title} — read case study`}
-              >
-                {body}
-              </Link>
-            ) : (
-              <div
-                className="card"
-                data-track={project.tracks[0]}
-                key={project.title}
-              >
-                {body}
-              </div>
-            );
-          })}
-        </div>
+        {compact.length > 0 && (
+          <>
+            <p className="proj-more-label">Also built</p>
+            <div className="proj-grid-compact">
+              {compact.map((p) => (
+                <ProjectCard key={p.title} project={p} compact />
+              ))}
+            </div>
+          </>
+        )}
       </div>
     </section>
   );

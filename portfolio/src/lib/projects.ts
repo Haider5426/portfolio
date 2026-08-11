@@ -175,11 +175,48 @@ export const PROJECTS: Project[] = [
     image: "/images/projects/ids-dashboard.svg",
     featured: true,
   },
+  /* --- Compact cards ---------------------------------------------------- */
   {
     title: "Child Labor Risk Model",
     metric: "80% acc.",
     desc: "Classification model flagging risk using socio-economic indicators.",
     tracks: ["data"],
+  },
+  {
+    title: "Heart Stroke Prediction",
+    metric: "Classification",
+    desc: "Predicting stroke risk from patient health indicators.",
+    tracks: ["data"],
+  },
+  {
+    title: "Credit Card Fraud Detection",
+    metric: "Imbalanced data",
+    desc: "Fraud classification on a heavily skewed transaction dataset.",
+    tracks: ["data"],
+  },
+  {
+    title: "Loan Acceptance",
+    metric: "Decision tree",
+    desc: "Decision-tree model predicting loan approval from applicant attributes.",
+    tracks: ["data"],
+  },
+  {
+    title: "Tax Evasion Prediction",
+    metric: "Classification",
+    desc: "Flagging likely evasion from filing and declaration patterns.",
+    tracks: ["data"],
+  },
+  {
+    title: "Music Therapy & Mental Health",
+    metric: "MxMH dataset",
+    desc: "Correlation analysis between listening habits and self-reported mental health.",
+    tracks: ["data"],
+  },
+  {
+    title: "Nutritional Value Calculator",
+    metric: "Image → calories",
+    desc: "Full-stack ML app estimating calories and nutrition from a photo of a meal.",
+    tracks: ["sw", "data"],
   },
   {
     title: "Central Policy Management",
@@ -191,6 +228,12 @@ export const PROJECTS: Project[] = [
     title: "NAT Clone Packet Catcher",
     metric: "−25% manual",
     desc: "Real-time network traffic visualization front end for packet monitoring.",
+    tracks: ["sw"],
+  },
+  {
+    title: "Tamimi Corporate Website",
+    metric: "Corporate site",
+    desc: "Corporate marketing site build for Tamimi Global.",
     tracks: ["sw"],
   },
 ];
