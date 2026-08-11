@@ -104,7 +104,11 @@ export default function Projects() {
         </div>
         <div className="proj-grid">
           {visible.map((project) => (
-            <div className="card" key={project.title}>
+            <div
+              className="card"
+              data-track={project.cats[0]}
+              key={project.title}
+            >
               {project.image && (
                 <img
                   className="card-illustration"

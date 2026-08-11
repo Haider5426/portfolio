@@ -1,5 +1,6 @@
 const SKILL_GROUPS = [
   {
+    track: "data",
     title: "Data & Analytics",
     chips: [
       "Python (Pandas, NumPy, scikit-learn)",
@@ -14,6 +15,7 @@ const SKILL_GROUPS = [
     ],
   },
   {
+    track: "sw",
     title: "Software & Web",
     chips: [
       "React.js",
@@ -42,7 +44,7 @@ export default function Skills() {
         </p>
         <div className="skill-grid">
           {SKILL_GROUPS.map((group) => (
-            <div className="skill-group" key={group.title}>
+            <div className="skill-group" data-track={group.track} key={group.title}>
               <h4>{group.title}</h4>
               <div className="chip-row">
                 {group.chips.map((chip) => (

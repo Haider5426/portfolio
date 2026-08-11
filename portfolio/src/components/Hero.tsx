@@ -1,8 +1,8 @@
 const STAGES = [
-  { tag: "01 · RAW", num: "300+", cap: "records/mo ingested & validated" },
-  { tag: "02 · CLEAN", num: "90%", cap: "manual errors removed" },
-  { tag: "03 · MODEL", num: "85%", cap: "predictive model accuracy" },
-  { tag: "04 · SHIP", num: "70%", cap: "faster reporting once live" },
+  { id: "raw", tag: "01 · RAW", num: "300+", cap: "records/mo ingested & validated" },
+  { id: "clean", tag: "02 · CLEAN", num: "90%", cap: "manual errors removed" },
+  { id: "model", tag: "03 · MODEL", num: "85%", cap: "predictive model accuracy" },
+  { id: "ship", tag: "04 · SHIP", num: "70%", cap: "faster reporting once live" },
 ];
 
 export default function Hero() {
@@ -33,7 +33,7 @@ export default function Hero() {
           <p className="pipeline-label">How a project moves through my hands</p>
           <div className="pipeline-track">
             {STAGES.map((stage) => (
-              <div className="stage" key={stage.tag}>
+              <div className="stage" data-stage={stage.id} key={stage.id}>
                 <span className="tag">{stage.tag}</span>
                 <span className="num">{stage.num}</span>
                 <span className="cap">{stage.cap}</span>
