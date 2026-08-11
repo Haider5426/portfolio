@@ -1,72 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
+import { PROJECTS, type Track } from "@/lib/projects";
 
-type Category = "data" | "sw";
-type Filter = "all" | Category;
-
-interface Project {
-  title: string;
-  metric: string;
-  desc: string;
-  cats: Category[];
-  image?: string;
-}
-
-const PROJECTS: Project[] = [
-  {
-    title: "Car Price Prediction",
-    metric: "85% acc.",
-    desc: "Regression model with feature engineering to price used cars from listing data.",
-    cats: ["data"],
-    image: "/images/projects/car-price-prediction.svg",
-  },
-  {
-    title: "Child Labor Risk Model",
-    metric: "80% acc.",
-    desc: "Classification model flagging risk using socio-economic indicators.",
-    cats: ["data"],
-  },
-  {
-    title: "Recommendation System",
-    metric: "+25% engage",
-    desc: "Collaborative + content-based filtering for personalized recommendations.",
-    cats: ["data"],
-    image: "/images/projects/recommendation-system.svg",
-  },
-  {
-    title: "Automated Inspection ETL",
-    metric: "Tamimi",
-    desc: "Raw inspection images → structured metadata → live KPI dashboards.",
-    cats: ["data"],
-    image: "/images/projects/inspection-etl.svg",
-  },
-  {
-    title: "Intrusion Detection Dashboard",
-    metric: "−40% response",
-    desc: "React dashboard with real-time alerts and live network security data.",
-    cats: ["sw"],
-    image: "/images/projects/ids-dashboard.svg",
-  },
-  {
-    title: "Central Policy Management",
-    metric: "+30% workflow",
-    desc: "React front end with reusable components and RESTful API integration.",
-    cats: ["sw"],
-  },
-  {
-    title: "NAT Clone Packet Catcher",
-    metric: "−25% manual",
-    desc: "Real-time network traffic visualization front end for packet monitoring.",
-    cats: ["sw"],
-  },
-  {
-    title: "AuditLeads",
-    metric: "Live SaaS",
-    desc: "Full-stack B2B SaaS for local-business prospecting — scrapes leads and scores each one's website weaknesses into an actionable Opportunity Score. Next.js, Prisma/Postgres, Paddle billing, a separate Python scraper worker, live paying customers.",
-    cats: ["sw", "data"],
-  },
-];
+type Filter = "all" | Track;
 
 const FILTERS: { key: Filter; label: string }[] = [
   { key: "all", label: "All" },
@@ -77,7 +15,7 @@ const FILTERS: { key: Filter; label: string }[] = [
 export default function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
   const visible = PROJECTS.filter(
-    (p) => filter === "all" || p.cats.includes(filter)
+    (p) => filter === "all" || p.tracks.includes(filter)
   );
 
   return (
@@ -88,43 +26,70 @@ export default function Projects() {
           <h2>Projects</h2>
         </div>
         <p className="section-sub">
-          Filter by discipline — the pipeline metaphor holds either way.
+          Two tracks, one pipeline — data work that ends in a model, and software
+          work that ends in something shipped.
         </p>
-        <div className="filter-row">
+
+        <div className="filter-row" role="group" aria-label="Filter projects">
           {FILTERS.map((f) => (
             <button
               key={f.key}
               type="button"
               className={`filter-btn${filter === f.key ? " active" : ""}`}
+              aria-pressed={filter === f.key}
               onClick={() => setFilter(f.key)}
             >
               {f.label}
             </button>
           ))}
         </div>
+
         <div className="proj-grid">
-          {visible.map((project) => (
-            <div
-              className="card"
-              data-track={project.cats[0]}
-              key={project.title}
-            >
-              {project.image && (
-                <img
-                  className="card-illustration"
-                  src={project.image}
-                  alt={`${project.title} illustration`}
-                  width={400}
-                  height={220}
-                />
-              )}
-              <div className="card-top">
-                <h3>{project.title}</h3>
-                <span className="card-metric">{project.metric}</span>
+          {visible.map((project) => {
+            const body = (
+              <>
+                {project.image && (
+                  <img
+                    className="card-illustration"
+                    src={project.image}
+                    alt=""
+                    width={400}
+                    height={220}
+                  />
+                )}
+                <div className="card-top">
+                  <h3>{project.title}</h3>
+                  <span className="card-metric">{project.metric}</span>
+                </div>
+                <p>{project.desc}</p>
+                {project.slug && (
+                  <span className="card-cta" aria-hidden="true">
+                    Read case study →
+                  </span>
+                )}
+              </>
+            );
+
+            return project.slug ? (
+              <Link
+                className="card card-link"
+                data-track={project.tracks[0]}
+                href={`/projects/${project.slug}`}
+                key={project.title}
+                aria-label={`${project.title} — read case study`}
+              >
+                {body}
+              </Link>
+            ) : (
+              <div
+                className="card"
+                data-track={project.tracks[0]}
+                key={project.title}
+              >
+                {body}
               </div>
-              <p>{project.desc}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>
