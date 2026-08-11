@@ -14,12 +14,14 @@ export async function generateMetadata(
   const project = getProjectBySlug(slug);
   if (!project) return {};
 
-  const title = `${project.title} — Case Study · Haider Khan`;
+  // The root layout applies a "%s · Haider Khan" template, so the name is
+  // deliberately left off here.
+  const title = `${project.title} — Case Study`;
   return {
     title,
     description: project.caseStudy.tagline,
     openGraph: {
-      title,
+      title: `${title} · Haider Khan`,
       description: project.caseStudy.tagline,
       type: "article",
     },
@@ -57,6 +59,21 @@ export default async function CaseStudyPage(
                 <dt>Context</dt>
                 <dd>{cs.timeframe}</dd>
               </div>
+              {cs.liveUrl && (
+                <div>
+                  <dt>Live</dt>
+                  <dd>
+                    <a
+                      className="case-live"
+                      href={cs.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {cs.liveUrl.replace(/^https?:\/\//, "")} ↗
+                    </a>
+                  </dd>
+                </div>
+              )}
             </dl>
           </header>
 

@@ -10,6 +10,8 @@ export interface CaseStudy {
   tagline: string;
   role: string;
   timeframe: string;
+  /** Public URL, when the project is live. */
+  liveUrl?: string;
   problem: string[];
   approach: string[];
   /** Rendered as the pipeline motif — one row per stage. */
@@ -41,54 +43,55 @@ export const PROJECTS: Project[] = [
     featured: true,
     caseStudy: {
       tagline:
-        "A B2B prospecting tool that finds local businesses with weak web presence and turns that weakness into a ranked sales list.",
+        "From “dentists in Austin” to a ranked list of prospects with a concrete reason to reach out.",
       role: "Solo — architecture, build, billing, deploy",
-      timeframe: "Live, with paying customers",
+      timeframe: "Live in production",
+      liveUrl: "https://auditleads.co",
       problem: [
-        "Agencies selling web services to local businesses burn hours on manual prospecting: search a category, open each result, eyeball the site, guess whether it's worth a pitch.",
-        "The judgement that actually matters — is this site slow, unindexed, missing a mobile layout, running no analytics — is invisible until someone opens the page and checks by hand.",
-        "That work is repetitive, inconsistent between people, and doesn't scale past a few dozen leads a week.",
+        "Agencies and freelancers who sell websites and marketing waste hours manually hunting for local businesses that actually need help — then guessing which ones are worth pitching.",
+        "There's no fast way to go from “dentists in Austin” to a ranked list of prospects with a concrete reason to reach out.",
       ],
       approach: [
-        "Treat prospecting as a data pipeline rather than a browsing task: ingest raw business listings, audit each site programmatically, score the weaknesses, and rank the output.",
-        "Score every lead into a single Opportunity Score so a user sorts one column instead of interpreting a dozen raw signals.",
-        "Decouple scraping from the web app. Scraping is slow, failure-prone, and bursty; the app has to stay responsive regardless of what the scraper is doing.",
-        "Meter usage per lead rather than per seat, so cost tracks value delivered — which makes correctness of the metering a billing-integrity problem, not a cosmetic one.",
+        "AuditLeads scrapes local businesses from Google Maps, visits each one's website, and computes an Opportunity Score from real signals (site speed, missing pages, technical weaknesses).",
+        "The user gets a ranked lead list where a high score means a real, pitchable problem — not a random name.",
       ],
       architecture: [
         {
-          step: "01 · INGEST",
+          step: "01 · SERVICES",
           detail:
-            "A separate Python scraper worker pulls business listings and fetches each candidate site. Running it out-of-process keeps slow, flaky network work off the request path.",
+            "Two decoupled services: a Next.js app (Prisma/Postgres, NextAuth, Paddle billing) and a standalone Python scraper worker, communicating through a job-queue pattern rather than blocking requests.",
         },
         {
-          step: "02 · AUDIT",
+          step: "02 · SCRAPE",
           detail:
-            "Each site is checked for concrete weaknesses — performance, mobile responsiveness, indexability, analytics, and other technical gaps that translate into a sales conversation.",
+            "The scraper gives each business its own fair-shared timeout so one slow website can't kill an entire batch.",
         },
         {
-          step: "03 · SCORE",
+          step: "03 · METER",
           detail:
-            "Signals are weighted into a single Opportunity Score, so the output is a ranked list of who to contact first rather than a raw dump of audit data.",
-        },
-        {
-          step: "04 · METER & SHIP",
-          detail:
-            "Credits are decremented per delivered lead inside a transaction, so concurrent requests and partially-failed scrapes can't over- or under-charge. Paddle handles subscriptions and the credit top-up flow.",
+            "Credits are charged only per lead that gets a complete score — never for partial or failed results — enforced with atomic database updates so concurrent searches can't be double-charged or slip through free.",
         },
       ],
       result: [
-        { stat: "Live", label: "in production with paying customers" },
-        { stat: "Solo", label: "architecture through deployment" },
-        { stat: "Per-lead", label: "credit metering, transactionally safe" },
+        { stat: "Live", label: "in production at auditleads.co" },
+        {
+          stat: "E2E",
+          label:
+            "real signup → search → scrape → score → checkout, verified against production infrastructure",
+        },
+        {
+          stat: "Full",
+          label:
+            "subscription lifecycle — upgrade, renewal, credit reset, invoicing — working end to end",
+        },
       ],
       stack: [
         {
           group: "Application",
-          items: ["Next.js", "TypeScript", "Prisma", "PostgreSQL"],
+          items: ["Next.js", "Prisma", "Postgres (Neon)", "NextAuth"],
         },
-        { group: "Services", items: ["Python scraper worker", "FastAPI"] },
-        { group: "Commercial", items: ["Paddle subscriptions", "Credit metering"] },
+        { group: "Services", items: ["Python scraper worker", "Paddle"] },
+        { group: "Ops", items: ["Sentry", "Vercel", "Railway"] },
       ],
     },
   },

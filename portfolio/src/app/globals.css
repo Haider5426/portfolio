@@ -841,7 +841,18 @@ ul.log-list li {
 .case-arch li[data-arch-i="0"] { --stage-color: var(--raw); }
 .case-arch li[data-arch-i="1"] { --stage-color: var(--raw); }
 .case-arch li[data-arch-i="2"] { --stage-color: var(--model); }
-.case-arch li[data-arch-i="3"] { --stage-color: var(--ship); }
+.case-arch li[data-arch-i="3"] { --stage-color: var(--model); }
+/* However many steps a case study has, the last one is where it ships. */
+.case-arch li:last-child { --stage-color: var(--ship); }
+
+.case-live {
+  color: var(--signal);
+  text-decoration: none;
+  border-bottom: 1px solid var(--grid);
+  font-weight: var(--weight-semi);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+.case-live:hover { border-color: var(--signal); }
 
 .arch-step {
   display: block;
