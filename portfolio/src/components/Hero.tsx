@@ -7,7 +7,7 @@ const STAGES = [
 
 export default function Hero() {
   return (
-    <section className="hero" aria-labelledby="hero-headline">
+    <section id="intro" className="hero" aria-labelledby="hero-headline">
       <div className="wrap">
         <p className="eyebrow reveal" data-reveal="1">
           Data Analyst &amp; Software Engineer, Riyadh

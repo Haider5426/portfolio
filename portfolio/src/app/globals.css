@@ -660,26 +660,8 @@ footer { padding: var(--section-y) 0 var(--space-12); }
 }
 
 /* ==========================================================================
-   NAV (top bar — replaced by the scrollspy nav in step 3)
+   NAV — fixed rail on desktop, sticky top bar below the rail breakpoint
    ========================================================================== */
-
-header.site {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: rgba(247, 247, 242, 0.88);
-  backdrop-filter: blur(6px);
-  border-bottom: 1px solid var(--grid);
-}
-
-.nav-inner {
-  max-width: var(--wrap-max);
-  margin: 0 auto;
-  padding: var(--space-3) var(--wrap-pad);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
 
 .brand {
   font-family: var(--font-mono);
@@ -698,21 +680,125 @@ header.site {
   background: var(--signal);
   border-radius: 50%;
   display: inline-block;
+  flex: none;
 }
 
-nav.links { display: flex; gap: var(--space-5); }
-nav.links a {
+/* --- Desktop rail ----------------------------------------------------- */
+
+.rail { display: none; }
+
+@media (min-width: 1100px) {
+  .rail {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--nav-w);
+    height: 100vh;
+    padding: var(--space-10) var(--space-6);
+    border-right: 1px solid var(--grid);
+    background: var(--paper);
+    z-index: 40;
+  }
+
+  .rail-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--ink-faint);
+    margin: var(--space-2) 0 var(--space-10);
+    padding-left: calc(8px + var(--space-2));
+  }
+
+  .rail-nav ul { list-style: none; margin: 0; padding: 0; }
+  .rail-nav li { margin-bottom: var(--space-1); }
+
+  .rail-nav a {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+    text-decoration: none;
+    color: var(--ink-faint);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  /* Growing indicator line — the active-state cue. */
+  .rail-line {
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--grid-strong);
+    flex: none;
+    transition: width var(--dur-med) var(--ease),
+                background-color var(--dur-med) var(--ease);
+  }
+
+  .rail-idx { font-size: var(--text-2xs); color: var(--ink-faint); }
+
+  .rail-nav a:hover { color: var(--ink); }
+  .rail-nav a:hover .rail-line { width: 28px; background: var(--ink-soft); }
+
+  .rail-nav a.is-active { color: var(--signal); }
+  .rail-nav a.is-active .rail-line { width: 36px; background: var(--signal); }
+  .rail-nav a.is-active .rail-idx { color: var(--signal); }
+  .rail-nav a.is-active .rail-label { font-weight: var(--weight-semi); }
+
+  .topbar { display: none; }
+
+  /* Offset the document so the rail never overlaps content. */
+  .page { padding-left: var(--nav-w); }
+}
+
+/* --- Mobile / tablet top bar ------------------------------------------ */
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 247, 242, 0.9);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--grid);
+}
+
+.topbar-inner {
+  max-width: var(--wrap-max);
+  margin: 0 auto;
+  padding: var(--space-3) var(--wrap-pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.topbar-nav {
+  display: flex;
+  gap: var(--space-5);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.topbar-nav::-webkit-scrollbar { display: none; }
+
+.topbar-nav a {
   color: var(--ink-soft);
   text-decoration: none;
   font-size: var(--text-sm);
   font-family: var(--font-mono);
-  transition: color var(--dur-fast) var(--ease);
+  white-space: nowrap;
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition: color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
 }
-nav.links a:hover { color: var(--signal); }
+.topbar-nav a:hover { color: var(--ink); }
+.topbar-nav a.is-active { color: var(--signal); border-bottom-color: var(--signal); }
 
-@media (max-width: 640px) {
-  nav.links { gap: var(--space-3); }
-  nav.links a { font-size: var(--text-xs); }
+@media (max-width: 720px) {
+  .topbar-inner { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .topbar-nav { gap: var(--space-4); width: 100%; }
+  .topbar-nav a { font-size: var(--text-xs); }
 }
 
 /* ==========================================================================

@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Ledger from "@/components/Ledger";
 import Experience from "@/components/Experience";
@@ -8,8 +8,8 @@ import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
-    <>
-      <Header />
+    <div className="page">
+      <Nav />
       <main id="top">
         <Hero />
         <Ledger />
@@ -18,6 +18,6 @@ export default function Home() {
         <Skills />
         <Contact />
       </main>
-    </>
+    </div>
   );
 }
