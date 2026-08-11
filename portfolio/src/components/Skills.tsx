@@ -45,7 +45,7 @@ export default function Skills() {
         <div className="skill-grid">
           {SKILL_GROUPS.map((group) => (
             <div className="skill-group" data-track={group.track} key={group.title}>
-              <h4>{group.title}</h4>
+              <h3>{group.title}</h3>
               <div className="chip-row">
                 {group.chips.map((chip) => (
                   <span className="chip" key={chip}>

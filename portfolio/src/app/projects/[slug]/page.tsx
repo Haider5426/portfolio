@@ -125,7 +125,7 @@ export default async function CaseStudyPage(
             <div className="case-stack">
               {cs.stack.map((group) => (
                 <div className="skill-group" data-track={track} key={group.group}>
-                  <h4>{group.group}</h4>
+                  <h3>{group.group}</h3>
                   <div className="chip-row">
                     {group.items.map((item) => (
                       <span className="chip" key={item}>

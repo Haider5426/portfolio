@@ -8,7 +8,8 @@ export const SECTIONS = [
   { id: "experience", label: "Experience", idx: "02" },
   { id: "projects", label: "Projects", idx: "03" },
   { id: "skills", label: "Skills", idx: "04" },
-  { id: "contact", label: "Contact", idx: "05" },
+  { id: "resume", label: "Résumé", idx: "05" },
+  { id: "contact", label: "Contact", idx: "06" },
 ];
 
 export default function Nav() {
@@ -38,20 +39,24 @@ export default function Nav() {
 
     els.forEach((el) => io.observe(el));
 
-    // The last section is short enough that it may never cross the band,
-    // so pin it once the page is scrolled to the bottom.
-    const onScroll = () => {
-      const atBottom =
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 2;
-      if (atBottom) setActive(SECTIONS[SECTIONS.length - 1].id);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+    // Pin the last section once the end of the page is reached. Done with a
+    // sentinel rather than a scroll handler so nothing reads layout on scroll.
+    const sentinel = document.getElementById("page-end");
+    const endIo = sentinel
+      ? new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setActive(SECTIONS[SECTIONS.length - 1].id);
+            }
+          },
+          { threshold: 0 }
+        )
+      : null;
+    if (sentinel && endIo) endIo.observe(sentinel);
 
     return () => {
       io.disconnect();
-      window.removeEventListener("scroll", onScroll);
+      endIo?.disconnect();
     };
   }, []);
 

@@ -14,7 +14,8 @@
   /* --- Ink ------------------------------------------------------------ */
   --ink:            #1B1F23;
   --ink-soft:       #565D64;
-  --ink-faint:      #8A9199;
+  /* Darkened to clear 4.5:1 on both paper surfaces. */
+  --ink-faint:      #676E74;
   --ink-inverse:    #F7F7F2;
   --ink-inverse-soft: #C7CBCE;
 
@@ -28,24 +29,33 @@
      MODEL/amber= the Software & Web track
      SHIP/green = outcomes, metrics, anything that shipped
      -------------------------------------------------------------------- */
+  /* Each motif colour has two forms: the graphic value (fills, borders,
+     dots — needs 3:1) and a -text value dark enough for body copy at 4.5:1
+     on both the paper and the matching -soft background. */
   --raw:            #2A6F97;
+  --raw-text:       #235C7E;
   --raw-soft:       #E4EEF3;
   --raw-strong:     #1F5678;
 
   --model:          #C98A2C;
+  --model-text:     #8A5A12;
   --model-soft:     #F6EBD8;
   --model-strong:   #A06D1F;
 
   --ship:           #3B7A57;
+  --ship-text:      #2C5C41;
   --ship-soft:      #E4EFE8;
   --ship-strong:    #2C5C41;
 
   /* Semantic aliases — components reference these, not the raw motif names */
   --accent-data:      var(--raw);
+  --accent-data-text: var(--raw-text);
   --accent-data-soft: var(--raw-soft);
   --accent-sw:        var(--model);
+  --accent-sw-text:   var(--model-text);
   --accent-sw-soft:   var(--model-soft);
   --accent-result:      var(--ship);
+  --accent-result-text: var(--ship-text);
   --accent-result-soft: var(--ship-soft);
 
   /* Primary interactive accent */
@@ -356,10 +366,10 @@ section.alt {
 
 /* Each stage carries its motif colour — this is where the accent
    system is defined visually, and every other accent use echoes it. */
-.stage[data-stage="raw"]   .num { color: var(--raw); }
-.stage[data-stage="clean"] .num { color: var(--raw); }
-.stage[data-stage="model"] .num { color: var(--model); }
-.stage[data-stage="ship"]  .num { color: var(--ship); }
+.stage[data-stage="raw"]   .num { color: var(--raw-text); }
+.stage[data-stage="clean"] .num { color: var(--raw-text); }
+.stage[data-stage="model"] .num { color: var(--model-text); }
+.stage[data-stage="ship"]  .num { color: var(--ship-text); }
 
 .stage::after {
   content: "→";
@@ -481,8 +491,8 @@ section.alt {
   padding: 3px var(--space-2);
   border-radius: var(--radius-pill);
 }
-.tag-pill.data { background: var(--accent-data-soft); color: var(--accent-data); }
-.tag-pill.sw   { background: var(--accent-sw-soft);   color: var(--accent-sw); }
+.tag-pill.data { background: var(--accent-data-soft); color: var(--accent-data-text); }
+.tag-pill.sw   { background: var(--accent-sw-soft);   color: var(--accent-sw-text); }
 
 ul.log-list { margin: 0; padding-left: var(--space-5); }
 ul.log-list li {
@@ -503,6 +513,7 @@ ul.log-list li {
 }
 
 .filter-btn {
+  display: inline-block;
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   padding: var(--space-2) var(--space-4);
@@ -513,9 +524,58 @@ ul.log-list li {
   color: var(--ink-soft);
   transition: border-color var(--dur-fast) var(--ease),
               color var(--dur-fast) var(--ease);
+  /* keeps the pill the same height whether it's a label or a button */
+  line-height: var(--leading-snug);
 }
 .filter-btn:hover { border-color: var(--grid-strong); color: var(--ink); }
-.filter-btn.active { border-color: var(--ink); color: var(--ink); background: var(--paper); }
+
+/* The radio itself is visually hidden but still focusable & announced. */
+.pf-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.pf-input:checked + .filter-btn {
+  border-color: var(--ink);
+  color: var(--ink);
+  background: var(--paper);
+  font-weight: var(--weight-semi);
+}
+.pf-input:focus-visible + .filter-btn {
+  outline: 3px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* The radios, pills and results are all siblings inside one fieldset so the
+   filtering works with plain sibling combinators — cheaper to invalidate than
+   a :has() that has to re-evaluate against every card. */
+.projects-filterable {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+.proj-results { flex: 0 0 100%; margin-top: var(--space-4); min-width: 0; }
+
+#pf-data:checked ~ .proj-results [data-tracks]:not([data-tracks~="data"]) { display: none; }
+#pf-sw:checked   ~ .proj-results [data-tracks]:not([data-tracks~="sw"])   { display: none; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 .proj-grid {
   display: grid;
@@ -546,8 +606,14 @@ ul.log-list li {
 }
 
 /* Semantic accent by track — echoes the pipeline motif. */
-.card[data-track="data"] { --card-accent: var(--accent-data); }
-.card[data-track="sw"]   { --card-accent: var(--accent-sw); }
+.card[data-track="data"] {
+  --card-accent: var(--accent-data);
+  --card-accent-text: var(--accent-data-text);
+}
+.card[data-track="sw"] {
+  --card-accent: var(--accent-sw);
+  --card-accent-text: var(--accent-sw-text);
+}
 
 .card-illustration {
   display: block;
@@ -571,7 +637,7 @@ ul.log-list li {
 .card-metric {
   font-family: var(--font-mono);
   font-weight: var(--weight-bold);
-  color: var(--accent-result);
+  color: var(--accent-result-text);
   font-size: var(--text-sm);
   background: var(--accent-result-soft);
   padding: 3px var(--space-2);
@@ -616,7 +682,7 @@ ul.log-list li {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   font-weight: var(--weight-semi);
-  color: var(--card-accent, var(--signal));
+  color: var(--card-accent-text, var(--signal));
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity var(--dur-fast) var(--ease),
@@ -835,7 +901,7 @@ ul.log-list li {
 }
 @media (max-width: 700px) { .skill-grid { grid-template-columns: 1fr; } }
 
-.skill-group h4 {
+.skill-group h3 {
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--weight-semi);
@@ -843,8 +909,8 @@ ul.log-list li {
   letter-spacing: var(--tracking-wide);
   margin: 0 0 var(--space-3);
 }
-.skill-group[data-track="data"] h4 { color: var(--accent-data); }
-.skill-group[data-track="sw"]   h4 { color: var(--accent-sw); }
+.skill-group[data-track="data"] h3 { color: var(--accent-data-text); }
+.skill-group[data-track="sw"]   h3 { color: var(--accent-sw-text); }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
@@ -883,7 +949,27 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   font-size: var(--text-base);
 }
 
-.contact-links { display: flex; flex-direction: column; gap: var(--space-3); }
+.contact-intro { flex: 1 1 340px; }
+.contact-cta { margin-top: var(--space-6); border-color: var(--ink-inverse); color: var(--ink-inverse); }
+.contact-cta:hover { background: var(--ink-inverse); color: var(--ink); }
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.contact-links li { display: flex; flex-direction: column; gap: 2px; }
+.contact-link-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  /* on the inverted contact panel the muted tone has to go lighter, not darker */
+  color: var(--ink-inverse-soft);
+}
 .contact-links a {
   color: var(--ink-inverse);
   font-family: var(--font-mono);
@@ -892,16 +978,217 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   border-bottom: 1px solid rgba(247, 247, 242, 0.25);
   padding-bottom: 2px;
   transition: border-color var(--dur-fast) var(--ease);
+  align-self: flex-start;
 }
 .contact-links a:hover { border-color: var(--ink-inverse); }
+.contact-links a:focus-visible { outline-color: var(--ink-inverse); }
+
+.site-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--grid);
+}
 
 .foot-note {
-  max-width: var(--wrap-max);
-  margin: var(--space-5) auto 0;
-  padding: 0 var(--wrap-pad);
+  margin: 0;
   font-size: var(--text-xs);
   color: var(--ink-faint);
   font-family: var(--font-mono);
+  padding: 0;
+}
+.foot-colophon { color: var(--ink-faint); }
+
+/* ==========================================================================
+   RESUME
+   ========================================================================== */
+
+.resume-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+@media (max-width: 700px) { .resume-grid { grid-template-columns: 1fr; } }
+
+.resume-page { padding-top: var(--space-12); }
+@media (min-width: 1100px) { .resume-page { padding-left: 0; } }
+
+.resume { max-width: 760px; padding-bottom: var(--space-24); }
+
+.resume-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+.resume-bar .case-back { margin-bottom: 0; }
+.resume-bar-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+
+.resume-hint {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  margin: 0 0 var(--space-8);
+}
+
+.resume-doc {
+  background: var(--paper-raised);
+  border: 1px solid var(--grid);
+  border-radius: var(--radius-xs);
+  padding: var(--space-12) var(--space-10);
+}
+
+.resume-head {
+  border-bottom: 2px solid var(--ink);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+.resume-head h1 {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-bold);
+  margin: 0 0 var(--space-1);
+  letter-spacing: var(--tracking-tight);
+}
+.resume-role {
+  font-family: var(--font-mono);
+  font-size: var(--text-base);
+  color: var(--signal);
+  margin: 0 0 var(--space-3);
+  font-weight: var(--weight-semi);
+}
+.resume-contact {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: var(--leading-snug);
+}
+.resume-contact a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--grid); }
+.resume-contact a:hover { color: var(--signal); border-color: var(--signal); }
+
+.resume-section { padding: 0; margin-bottom: var(--space-8); }
+.resume-section:last-child { margin-bottom: 0; }
+.resume-section > h2 {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--ink);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--grid);
+  margin-bottom: var(--space-4);
+}
+.resume-section p {
+  font-size: var(--text-base);
+  color: var(--ink-soft);
+  margin: 0 0 var(--space-3);
+  line-height: var(--leading-body);
+}
+.resume-section ul { margin: 0 0 var(--space-3); padding-left: var(--space-5); }
+.resume-section li {
+  font-size: var(--text-base);
+  color: var(--ink-soft);
+  margin-bottom: var(--space-2);
+  line-height: var(--leading-body);
+}
+
+.resume-entry { margin-bottom: var(--space-5); }
+.resume-entry:last-child { margin-bottom: 0; }
+.resume-entry-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+.resume-entry-head h3 { font-size: var(--text-base); font-family: var(--font-sans); }
+.resume-org { color: var(--signal); font-weight: var(--weight-semi); }
+.resume-dates {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+
+.resume-pairs { margin: 0; }
+.resume-pairs > div {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+.resume-pairs dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semi);
+  color: var(--ink);
+}
+.resume-pairs dd { margin: 0; font-size: var(--text-base); color: var(--ink-soft); }
+@media (max-width: 600px) {
+  .resume-pairs > div { grid-template-columns: 1fr; gap: 2px; }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY HELPERS
+   ========================================================================== */
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--ink);
+  color: var(--paper);
+  padding: var(--space-3) var(--space-5);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-xs) 0;
+}
+.skip-link:focus {
+  left: 0;
+}
+
+/* ==========================================================================
+   PRINT — résumé pages produce a clean PDF
+   ========================================================================== */
+
+@media print {
+  @page { margin: 14mm; }
+
+  body {
+    background: #fff;
+    background-image: none;
+    font-size: 10.5pt;
+  }
+
+  .no-print,
+  .rail,
+  .topbar,
+  .skip-link { display: none !important; }
+
+  .page, .resume-page { padding: 0 !important; }
+  .wrap, .resume { max-width: none; padding: 0; }
+
+  .resume-doc {
+    border: none;
+    padding: 0;
+    background: #fff;
+  }
+
+  .resume-section { break-inside: avoid; margin-bottom: 14pt; }
+  .resume-entry { break-inside: avoid; }
+  .resume-head { border-bottom: 1.5pt solid #000; }
+  .resume-role { color: #000; }
+  .resume-org { color: #000; }
+  .resume-section p, .resume-section li, .resume-pairs dd { color: #222; }
+  .resume-contact, .resume-contact a { color: #333; }
+
+  a { text-decoration: none; }
 }
 
 /* ==========================================================================
@@ -1003,8 +1290,9 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   position: sticky;
   top: 0;
   z-index: 50;
-  background: rgba(247, 247, 242, 0.9);
-  backdrop-filter: blur(8px);
+  /* Opaque rather than translucent-with-blur: backdrop-filter on a sticky
+     element forces recompositing on every scroll for no visible gain here. */
+  background: var(--paper);
   border-bottom: 1px solid var(--grid);
 }
 
@@ -1107,22 +1395,26 @@ p.lede {
   to   { opacity: 1; transform: none; }
 }
 
+/* Kept deliberately short: an element held at opacity 0 does not count as
+   painted, so a long fade here would push Largest Contentful Paint out. */
 .reveal {
   opacity: 0;
-  animation: settle var(--dur-slow) var(--ease) forwards;
-  animation-delay: calc((var(--reveal-i, 0)) * 90ms);
+  animation: settle 280ms var(--ease) forwards;
+  animation-delay: calc((var(--reveal-i, 0)) * 55ms);
 }
+/* The headline is the LCP element — it fades with no delay at all. */
 .reveal[data-reveal="1"] { --reveal-i: 0; }
-.reveal[data-reveal="2"] { --reveal-i: 1; }
-.reveal[data-reveal="3"] { --reveal-i: 2; }
-.reveal[data-reveal="4"] { --reveal-i: 3; }
-.reveal[data-reveal="5"] { --reveal-i: 4; }
+.reveal[data-reveal="2"] { --reveal-i: 0; }
+.reveal[data-reveal="3"] { --reveal-i: 1; }
+.reveal[data-reveal="4"] { --reveal-i: 2; }
+.reveal[data-reveal="5"] { --reveal-i: 3; }
 
-/* The pipeline stages cascade after the strip itself has arrived. */
+/* The pipeline stages cascade after the strip itself has arrived. It sits
+   below the fold, so its timing does not affect LCP. */
 .pipeline .stage {
   opacity: 0;
   animation: settle var(--dur-med) var(--ease) forwards;
-  animation-delay: calc(520ms + var(--stage-i, 0) * 130ms);
+  animation-delay: calc(360ms + var(--stage-i, 0) * 110ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
