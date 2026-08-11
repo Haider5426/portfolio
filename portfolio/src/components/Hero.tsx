@@ -7,21 +7,28 @@ const STAGES = [
 
 export default function Hero() {
   return (
-    <section className="hero">
+    <section className="hero" aria-labelledby="hero-headline">
       <div className="wrap">
-        <p className="eyebrow">Data Analyst & Software Engineer, Riyadh</p>
-        <h1 className="headline">
+        <p className="eyebrow reveal" data-reveal="1">
+          Data Analyst &amp; Software Engineer, Riyadh
+        </p>
+
+        <h1 id="hero-headline" className="headline reveal" data-reveal="2">
           Raw data in.
           <br />
           Shipped <span className="accent">product</span> out.
         </h1>
-        <p className="lede">
-          I build the pipeline between messy operational data and the dashboard or
-          web app someone actually uses — from ETL and predictive models to the
-          Next.js interface that ships them. 5+ years, 100+ delivered projects.
+
+        <p className="lede reveal" data-reveal="3">
+          I turn messy operational data into software people actually use. I&rsquo;ve
+          shipped <strong>AuditLeads</strong> — a live B2B SaaS with paying
+          customers — digitized inspection workflows that cut reporting time
+          70%, and delivered <strong>100+ analytics and ML projects</strong>{" "}
+          since 2018.
         </p>
-        <div className="hero-actions">
-          <a href="#experience" className="btn primary">
+
+        <div className="hero-actions reveal" data-reveal="4">
+          <a href="#projects" className="btn primary">
             See the work
           </a>
           <a href="#contact" className="btn">
@@ -29,11 +36,17 @@ export default function Hero() {
           </a>
         </div>
 
-        <div className="pipeline">
+        {/* Signature moment: the pipeline fills stage by stage on load. */}
+        <div className="pipeline reveal" data-reveal="5">
           <p className="pipeline-label">How a project moves through my hands</p>
           <div className="pipeline-track">
-            {STAGES.map((stage) => (
-              <div className="stage" data-stage={stage.id} key={stage.id}>
+            {STAGES.map((stage, i) => (
+              <div
+                className="stage"
+                data-stage={stage.id}
+                style={{ "--stage-i": i } as React.CSSProperties}
+                key={stage.id}
+              >
                 <span className="tag">{stage.tag}</span>
                 <span className="num">{stage.num}</span>
                 <span className="cap">{stage.cap}</span>

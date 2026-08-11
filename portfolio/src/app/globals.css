@@ -759,3 +759,47 @@ p.lede {
   flex-wrap: wrap;
   margin-bottom: var(--space-16);
 }
+
+.lede strong {
+  color: var(--ink);
+  font-weight: var(--weight-semi);
+}
+
+/* ==========================================================================
+   ENTRANCE SEQUENCE
+   One coordinated reveal on load: the hero's lines settle in order, then the
+   pipeline fills stage by stage. Deliberately the only motion on the page.
+   ========================================================================== */
+
+@keyframes settle {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.reveal {
+  opacity: 0;
+  animation: settle var(--dur-slow) var(--ease) forwards;
+  animation-delay: calc((var(--reveal-i, 0)) * 90ms);
+}
+.reveal[data-reveal="1"] { --reveal-i: 0; }
+.reveal[data-reveal="2"] { --reveal-i: 1; }
+.reveal[data-reveal="3"] { --reveal-i: 2; }
+.reveal[data-reveal="4"] { --reveal-i: 3; }
+.reveal[data-reveal="5"] { --reveal-i: 4; }
+
+/* The pipeline stages cascade after the strip itself has arrived. */
+.pipeline .stage {
+  opacity: 0;
+  animation: settle var(--dur-med) var(--ease) forwards;
+  animation-delay: calc(520ms + var(--stage-i, 0) * 130ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal,
+  .pipeline .stage {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
