@@ -1,0 +1,24 @@
+<svg width="100%" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Recommendation system illustration</title>
+<desc>A central user node connected to several content nodes, weighted by relevance</desc>
+<rect width="400" height="220" fill="#FFFFFF"/>
+<rect x="0.5" y="0.5" width="399" height="219" fill="none" stroke="#DADFE3" stroke-width="1"/>
+
+<text x="200" y="38" text-anchor="middle" font-family="monospace" font-size="12" fill="#565D64">COLLABORATIVE FILTERING</text>
+<text x="200" y="56" text-anchor="middle" font-family="monospace" font-weight="700" font-size="16" fill="#1B1F23">Recommendation System</text>
+
+<line x1="200" y1="130" x2="90" y2="90" stroke="#3B7A57" stroke-width="3" opacity="0.85"/>
+<line x1="200" y1="130" x2="310" y2="90" stroke="#3B7A57" stroke-width="2" opacity="0.55"/>
+<line x1="200" y1="130" x2="120" y2="175" stroke="#3B7A57" stroke-width="1.5" opacity="0.35"/>
+<line x1="200" y1="130" x2="280" y2="175" stroke="#3B7A57" stroke-width="1" opacity="0.2"/>
+
+<circle cx="200" cy="130" r="14" fill="#F7F7F2" stroke="#2A6F97" stroke-width="2"/>
+<text x="200" y="134" text-anchor="middle" font-family="monospace" font-size="9" fill="#2A6F97">U</text>
+
+<rect x="72" y="72" width="36" height="36" rx="4" fill="#E8F1E9" stroke="#3B7A57" stroke-width="1.5"/>
+<rect x="292" y="72" width="36" height="36" rx="4" fill="#EEF3EC" stroke="#3B7A57" stroke-width="1.5"/>
+<rect x="104" y="160" width="32" height="32" rx="4" fill="#F1F4F1" stroke="#3B7A57" stroke-width="1.2"/>
+<rect x="264" y="160" width="32" height="32" rx="4" fill="#F3F5F2" stroke="#3B7A57" stroke-width="1"/>
+
+<text x="200" y="196" text-anchor="middle" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="#565D64">+25% engagement · conceptual diagram, not a live screenshot</text>
+</svg>

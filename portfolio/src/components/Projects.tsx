@@ -10,6 +10,7 @@ interface Project {
   metric: string;
   desc: string;
   cats: Category[];
+  image?: string;
 }
 
 const PROJECTS: Project[] = [
@@ -18,6 +19,7 @@ const PROJECTS: Project[] = [
     metric: "85% acc.",
     desc: "Regression model with feature engineering to price used cars from listing data.",
     cats: ["data"],
+    image: "/images/projects/car-price-prediction.svg",
   },
   {
     title: "Child Labor Risk Model",
@@ -30,18 +32,21 @@ const PROJECTS: Project[] = [
     metric: "+25% engage",
     desc: "Collaborative + content-based filtering for personalized recommendations.",
     cats: ["data"],
+    image: "/images/projects/recommendation-system.svg",
   },
   {
     title: "Automated Inspection ETL",
     metric: "Tamimi",
     desc: "Raw inspection images → structured metadata → live KPI dashboards.",
     cats: ["data"],
+    image: "/images/projects/inspection-etl.svg",
   },
   {
     title: "Intrusion Detection Dashboard",
     metric: "−40% response",
     desc: "React dashboard with real-time alerts and live network security data.",
     cats: ["sw"],
+    image: "/images/projects/ids-dashboard.svg",
   },
   {
     title: "Central Policy Management",
@@ -100,6 +105,15 @@ export default function Projects() {
         <div className="proj-grid">
           {visible.map((project) => (
             <div className="card" key={project.title}>
+              {project.image && (
+                <img
+                  className="card-illustration"
+                  src={project.image}
+                  alt={`${project.title} illustration`}
+                  width={400}
+                  height={220}
+                />
+              )}
               <div className="card-top">
                 <h3>{project.title}</h3>
                 <span className="card-metric">{project.metric}</span>

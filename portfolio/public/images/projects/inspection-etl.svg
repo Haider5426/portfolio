@@ -1,0 +1,42 @@
+<svg width="100%" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Automated inspection ETL pipeline illustration</title>
+<desc>Raw inspection images flow into structured metadata, then into a KPI dashboard</desc>
+<rect width="400" height="220" fill="#FFFFFF"/>
+<rect x="0.5" y="0.5" width="399" height="219" fill="none" stroke="#DADFE3" stroke-width="1"/>
+
+<g>
+  <rect x="28" y="82" width="70" height="56" rx="3" fill="#F7F7F2" stroke="#2A6F97" stroke-width="1.5"/>
+  <circle cx="63" cy="103" r="9" fill="none" stroke="#2A6F97" stroke-width="1.5"/>
+  <circle cx="63" cy="103" r="3.5" fill="#2A6F97"/>
+  <path d="M35 128 L52 112 L62 122 L74 106 L91 128 Z" fill="#2A6F97" opacity="0.18"/>
+  <text x="63" y="150" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#1B1F23">RAW IMAGES</text>
+</g>
+
+<line x1="102" y1="110" x2="140" y2="110" stroke="#565D64" stroke-width="1.5"/>
+<path d="M134 105 L140 110 L134 115" fill="none" stroke="#565D64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g>
+  <rect x="148" y="82" width="104" height="56" rx="3" fill="#F7F7F2" stroke="#C98A2C" stroke-width="1.5"/>
+  <line x1="160" y1="98" x2="240" y2="98" stroke="#C98A2C" stroke-width="1"/>
+  <line x1="160" y1="110" x2="240" y2="110" stroke="#C98A2C" stroke-width="1"/>
+  <line x1="160" y1="122" x2="215" y2="122" stroke="#C98A2C" stroke-width="1"/>
+  <line x1="188" y1="92" x2="188" y2="128" stroke="#C98A2C" stroke-width="1"/>
+  <text x="200" y="150" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#1B1F23">METADATA</text>
+</g>
+
+<line x1="256" y1="110" x2="294" y2="110" stroke="#565D64" stroke-width="1.5"/>
+<path d="M288 105 L294 110 L288 115" fill="none" stroke="#565D64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g>
+  <rect x="302" y="82" width="70" height="56" rx="3" fill="#F7F7F2" stroke="#3B7A57" stroke-width="1.5"/>
+  <rect x="313" y="112" width="8" height="16" fill="#3B7A57"/>
+  <rect x="325" y="104" width="8" height="24" fill="#3B7A57"/>
+  <rect x="337" y="96" width="8" height="32" fill="#3B7A57"/>
+  <rect x="349" y="108" width="8" height="20" fill="#3B7A57"/>
+  <text x="337" y="150" text-anchor="middle" font-family="monospace" font-size="10" font-weight="600" fill="#1B1F23">DASHBOARD</text>
+</g>
+
+<text x="200" y="40" text-anchor="middle" font-family="monospace" font-size="12" fill="#565D64">01 · RAW</text>
+<text x="200" y="58" text-anchor="middle" font-family="monospace" font-weight="700" font-size="16" fill="#1B1F23">Inspection ETL Pipeline</text>
+<text x="200" y="195" text-anchor="middle" font-family="'IBM Plex Sans',sans-serif" font-size="11" fill="#565D64">300+ records/month · conceptual diagram, not a live screenshot</text>
+</svg>
