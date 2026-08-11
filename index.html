@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haider Khan — Data → Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F7F2;
+    --paper-raised:#FFFFFF;
+    --ink:#1B1F23;
+    --ink-soft:#565D64;
+    --grid:#DADFE3;
+    --signal:#2A6F97;
+    --signal-soft:#E4EEF3;
+    --amber:#C98A2C;
+    --amber-soft:#F6EBD8;
+    --good:#3B7A57;
+    --good-soft:#E4EFE8;
+    --radius:2px;
+  }
+  *,*::before,*::after{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.55;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 48px 48px;
+    background-position: -1px -1px;
+  }
+  a{color:var(--signal);}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+
+  :focus-visible{outline:3px solid var(--signal); outline-offset:2px;}
+
+  /* NAV */
+  header.site{
+    position:sticky; top:0; z-index:50;
+    background:rgba(247,247,242,0.88);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--grid);
+  }
+  .nav-inner{
+    max-width:960px;margin:0 auto;padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .brand{
+    font-family:'IBM Plex Mono',monospace; font-weight:600; font-size:15px;
+    letter-spacing:0.02em; color:var(--ink); text-decoration:none;
+    display:flex; align-items:center; gap:8px;
+  }
+  .brand .dot{width:8px;height:8px;background:var(--signal);border-radius:50%;display:inline-block;}
+  nav.links{display:flex; gap:22px;}
+  nav.links a{
+    color:var(--ink-soft); text-decoration:none; font-size:14px;
+    font-family:'IBM Plex Mono',monospace;
+  }
+  nav.links a:hover{color:var(--signal);}
+  @media (max-width:640px){ nav.links{gap:12px;} nav.links a{font-size:12px;} }
+
+  /* HERO */
+  .hero{padding:76px 0 40px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--signal);
+    text-transform:uppercase; letter-spacing:0.12em; margin:0 0 18px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:"//"; color:var(--ink-soft);}
+  h1.headline{
+    font-family:'IBM Plex Mono',monospace; font-weight:700;
+    font-size:clamp(32px,5.4vw,58px); line-height:1.08; margin:0 0 22px; letter-spacing:-0.01em;
+  }
+  h1.headline .accent{color:var(--signal);}
+  p.lede{
+    font-size:18px; color:var(--ink-soft); max-width:620px; margin:0 0 34px;
+  }
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:56px;}
+  .btn{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600;
+    padding:11px 18px; border-radius:var(--radius); text-decoration:none;
+    border:1px solid var(--ink); cursor:pointer; background:none; color:var(--ink);
+    transition: background .15s ease, color .15s ease;
+  }
+  .btn:hover{background:var(--ink); color:var(--paper);}
+  .btn.primary{background:var(--signal); border-color:var(--signal); color:#fff;}
+  .btn.primary:hover{background:#1f5678;}
+
+  /* PIPELINE STRIP - signature element */
+  .pipeline{
+    background:var(--paper-raised); border:1px solid var(--grid); border-radius:var(--radius);
+    padding:26px 22px 20px; overflow:hidden; position:relative;
+  }
+  .pipeline-label{
+    font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--ink-soft);
+    text-transform:uppercase; letter-spacing:0.1em; margin:0 0 16px;
+  }
+  .pipeline-track{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;
+  }
+  .stage{
+    position:relative; padding:14px 14px 16px; border-right:1px dashed var(--grid);
+    opacity:0; transform:translateY(8px);
+    animation: rise .5s ease forwards;
+  }
+  .stage:last-child{border-right:none;}
+  .stage:nth-child(1){animation-delay:.05s;}
+  .stage:nth-child(2){animation-delay:.25s;}
+  .stage:nth-child(3){animation-delay:.45s;}
+  .stage:nth-child(4){animation-delay:.65s;}
+  @keyframes rise{ to{opacity:1; transform:translateY(0);} }
+  .stage .tag{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; font-weight:600;
+    color:var(--ink); display:inline-block; margin-bottom:8px;
+  }
+  .stage .num{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:26px; color:var(--signal);
+    display:block; line-height:1;
+  }
+  .stage .cap{font-size:12px; color:var(--ink-soft); margin-top:4px; display:block;}
+  .stage::after{
+    content:"→"; position:absolute; right:-11px; top:20px; color:var(--ink-soft);
+    font-size:14px; z-index:2; background:var(--paper-raised); width:16px; text-align:center;
+  }
+  .stage:last-child::after{content:"";}
+  @media (max-width:700px){
+    .pipeline-track{grid-template-columns:1fr; }
+    .stage{border-right:none; border-bottom:1px dashed var(--grid); padding:12px 0;}
+    .stage::after{content:"↓"; right:auto; left:0; top:auto; bottom:-9px;}
+    .stage:last-child{border-bottom:none;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .stage{animation:none; opacity:1; transform:none;}
+  }
+
+  /* SECTIONS */
+  section{padding:64px 0;}
+  section.alt{background:var(--paper-raised); border-top:1px solid var(--grid); border-bottom:1px solid var(--grid);}
+  .section-head{display:flex; align-items:baseline; gap:14px; margin-bottom:30px;}
+  .section-head .idx{font-family:'IBM Plex Mono',monospace; color:var(--signal); font-size:14px;}
+  h2{font-family:'IBM Plex Mono',monospace; font-size:24px; margin:0; font-weight:700;}
+  .section-sub{color:var(--ink-soft); font-size:15px; margin:0 0 30px;}
+
+  /* LEDGER (achievements) */
+  .ledger{border:1px solid var(--grid); border-radius:var(--radius); background:var(--paper-raised); overflow:hidden;}
+  .ledger-row{
+    display:grid; grid-template-columns:44px 1fr auto; gap:16px; align-items:center;
+    padding:16px 18px; border-bottom:1px solid var(--grid);
+  }
+  .ledger-row:last-child{border-bottom:none;}
+  .ledger-row .row-idx{font-family:'IBM Plex Mono',monospace; color:var(--ink-soft); font-size:13px;}
+  .ledger-row .row-text{font-size:15px;}
+  .ledger-row .row-stat{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; font-size:20px; color:var(--good);
+    white-space:nowrap;
+  }
+  @media (max-width:600px){
+    .ledger-row{grid-template-columns:28px 1fr; grid-template-rows:auto auto;}
+    .ledger-row .row-stat{grid-column:2; font-size:17px;}
+  }
+
+  /* EXPERIENCE / LOG */
+  .log-entry{
+    border-left:2px solid var(--grid); padding:2px 0 30px 22px; position:relative; margin-left:6px;
+  }
+  .log-entry::before{
+    content:""; position:absolute; left:-7px; top:4px; width:12px; height:12px;
+    background:var(--paper); border:2px solid var(--signal); border-radius:50%;
+  }
+  .log-entry:last-child{padding-bottom:2px;}
+  .log-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:10px; margin-bottom:6px;}
+  .log-role{font-weight:600; font-size:17px;}
+  .log-org{color:var(--signal); font-weight:600;}
+  .log-dates{font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--ink-soft); margin-left:auto;}
+  .log-tags{display:flex; gap:6px; margin:8px 0 10px;}
+  .tag-pill{
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em;
+    padding:3px 8px; border-radius:20px;
+  }
+  .tag-pill.data{background:var(--signal-soft); color:var(--signal);}
+  .tag-pill.sw{background:var(--amber-soft); color:var(--amber);}
+  ul.log-list{margin:0; padding-left:18px;}
+  ul.log-list li{margin-bottom:6px; font-size:15px; color:var(--ink);}
+
+  /* PROJECTS */
+  .filter-row{display:flex; gap:8px; margin-bottom:26px; flex-wrap:wrap;}
+  .filter-btn{
+    font-family:'IBM Plex Mono',monospace; font-size:12.5px; padding:8px 14px;
+    border:1px solid var(--grid); background:var(--paper-raised); border-radius:20px; cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .filter-btn.active{border-color:var(--ink); color:var(--ink); background:var(--paper);}
+  .proj-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px;}
+  @media (max-width:700px){ .proj-grid{grid-template-columns:1fr;} }
+  .card{
+    background:var(--paper-raised); border:1px solid var(--grid); border-radius:var(--radius);
+    padding:20px; display:flex; flex-direction:column; gap:10px; transition:border-color .15s ease, transform .15s ease;
+  }
+  .card:hover{border-color:var(--signal); transform:translateY(-2px);}
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
+  .card h3{margin:0; font-size:16px; font-family:'IBM Plex Mono',monospace;}
+  .card p{margin:0; font-size:14px; color:var(--ink-soft);}
+  .card-metric{
+    font-family:'IBM Plex Mono',monospace; font-weight:700; color:var(--good); font-size:14px;
+    background:var(--good-soft); padding:3px 9px; border-radius:20px; white-space:nowrap;
+  }
+
+  /* SKILLS */
+  .skill-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:24px;}
+  @media (max-width:700px){ .skill-grid{grid-template-columns:1fr;} }
+  .skill-group h4{
+    font-family:'IBM Plex Mono',monospace; font-size:13px; text-transform:uppercase; letter-spacing:.08em;
+    color:var(--signal); margin:0 0 12px;
+  }
+  .chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .chip{
+    font-size:13.5px; padding:6px 12px; background:var(--paper); border:1px solid var(--grid);
+    border-radius:20px;
+  }
+
+  /* FOOTER / CONTACT */
+  footer{padding:64px 0 50px;}
+  .contact-box{
+    background:var(--ink); color:var(--paper); border-radius:var(--radius);
+    padding:44px 34px; display:flex; flex-wrap:wrap; justify-content:space-between; gap:30px; align-items:center;
+  }
+  .contact-box h2{color:var(--paper);}
+  .contact-box .section-head .idx{color:var(--amber);}
+  .contact-links{display:flex; flex-direction:column; gap:10px;}
+  .contact-links a{color:var(--paper); font-family:'IBM Plex Mono',monospace; font-size:14px; text-decoration:none; border-bottom:1px solid rgba(247,247,242,0.25); padding-bottom:2px;}
+  .contact-links a:hover{border-color:var(--paper);}
+  .foot-note{max-width:960px; margin:20px auto 0; padding:0 24px; font-size:12.5px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace;}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="nav-inner">
+    <a href="#top" class="brand"><span class="dot"></span>HAIDER.KHAN</a>
+    <nav class="links">
+      <a href="#achievements">Ledger</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Data Analyst &amp; Software Engineer, Riyadh</p>
+      <h1 class="headline">Raw data in.<br>Shipped <span class="accent">product</span> out.</h1>
+      <p class="lede">I build the pipeline between messy operational data and the dashboard or web app someone actually uses — from ETL and predictive models to the Next.js interface that ships them. 5+ years, 100+ delivered projects.</p>
+      <div class="hero-actions">
+        <a href="#experience" class="btn primary">See the work</a>
+        <a href="#contact" class="btn">Get in touch</a>
+      </div>
+
+      <div class="pipeline">
+        <p class="pipeline-label">How a project moves through my hands</p>
+        <div class="pipeline-track">
+          <div class="stage"><span class="tag">01 · RAW</span><span class="num">300+</span><span class="cap">records/mo ingested &amp; validated</span></div>
+          <div class="stage"><span class="tag">02 · CLEAN</span><span class="num">90%</span><span class="cap">manual errors removed</span></div>
+          <div class="stage"><span class="tag">03 · MODEL</span><span class="num">85%</span><span class="cap">predictive model accuracy</span></div>
+          <div class="stage"><span class="tag">04 · SHIP</span><span class="num">70%</span><span class="cap">faster reporting once live</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="achievements" class="alt">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">01</span><h2>Ledger</h2></div>
+      <p class="section-sub">The numbers behind five years of analytics and engineering work.</p>
+      <div class="ledger">
+        <div class="ledger-row"><span class="row-idx">01</span><span class="row-text">Replaced manual spreadsheet reporting with automated ETL workflows at Tamimi</span><span class="row-stat">−70% time</span></div>
+        <div class="ledger-row"><span class="row-idx">02</span><span class="row-text">Structured data intake pipelines with validation checks</span><span class="row-stat">−90% errors</span></div>
+        <div class="ledger-row"><span class="row-idx">03</span><span class="row-text">End-to-end analytics &amp; ML projects delivered for clients worldwide (Fiverr, since 2018)</span><span class="row-stat">100+ projects</span></div>
+        <div class="ledger-row"><span class="row-idx">04</span><span class="row-text">Predictive models shipped for regression &amp; classification tasks</span><span class="row-stat">up to 85%</span></div>
+        <div class="ledger-row"><span class="row-idx">05</span><span class="row-text">KPI dashboards &amp; cross-site trend reporting for management</span><span class="row-stat">+35% speed</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">02</span><h2>Experience</h2></div>
+      <p class="section-sub">Three roles, one pattern: find the messy manual process, build the pipeline that replaces it.</p>
+
+      <div class="log-entry">
+        <div class="log-head"><span class="log-role">Data Analyst / Software Engineer</span><span class="log-org">— Tamimi Global Co. (TAFGA)</span><span class="log-dates">Oct 2024 – Present</span></div>
+        <div class="log-tags"><span class="tag-pill data">Data</span><span class="tag-pill sw">Software</span></div>
+        <ul class="log-list">
+          <li>Built a Next.js + Tailwind inspection platform that digitized manual workflows — 70% faster reporting, 90% fewer manual errors.</li>
+          <li>Engineered ETL pipelines into Google Drive/Sheets, processing 300+ inspection records a month with automated metadata logging.</li>
+          <li>Shipped KPI dashboards and cross-site trend reports that sped up management decisions by 35%.</li>
+          <li>Built JWT-based role access so reporting data stays compliant and audit-ready.</li>
+        </ul>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-head"><span class="log-role">Software Engineer</span><span class="log-org">— Horizon Tech</span><span class="log-dates">Jul 2022 – Jul 2024</span></div>
+        <div class="log-tags"><span class="tag-pill sw">Software</span></div>
+        <ul class="log-list">
+          <li>Led React interface work across 10+ applications, lifting user satisfaction 30%.</li>
+          <li>Kept production at 99.9% uptime while cutting bug reports 25%.</li>
+          <li>Translated cross-functional requirements into UI/UX, improving delivery time 20%.</li>
+        </ul>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-head"><span class="log-role">Data Analyst / Data Scientist</span><span class="log-org">— Fiverr (Freelance)</span><span class="log-dates">2018 – Present</span></div>
+        <div class="log-tags"><span class="tag-pill data">Data</span></div>
+        <ul class="log-list">
+          <li>Completed 100+ analytics and ML projects: prediction, classification, recommendation systems.</li>
+          <li>Built forecasting and ML models reaching up to 85% accuracy for clients across industries.</li>
+          <li>Delivered dashboards that improved client decision efficiency by 60%.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="alt">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">03</span><h2>Projects</h2></div>
+      <p class="section-sub">Filter by discipline — the pipeline metaphor holds either way.</p>
+      <div class="filter-row">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="data">Data &amp; ML</button>
+        <button class="filter-btn" data-filter="sw">Software</button>
+      </div>
+      <div class="proj-grid" id="projGrid">
+
+        <div class="card" data-cat="data">
+          <div class="card-top"><h3>Car Price Prediction</h3><span class="card-metric">85% acc.</span></div>
+          <p>Regression model with feature engineering to price used cars from listing data.</p>
+        </div>
+
+        <div class="card" data-cat="data">
+          <div class="card-top"><h3>Child Labor Risk Model</h3><span class="card-metric">80% acc.</span></div>
+          <p>Classification model flagging risk using socio-economic indicators.</p>
+        </div>
+
+        <div class="card" data-cat="data">
+          <div class="card-top"><h3>Recommendation System</h3><span class="card-metric">+25% engage</span></div>
+          <p>Collaborative + content-based filtering for personalized recommendations.</p>
+        </div>
+
+        <div class="card" data-cat="data">
+          <div class="card-top"><h3>Automated Inspection ETL</h3><span class="card-metric">Tamimi</span></div>
+          <p>Raw inspection images → structured metadata → live KPI dashboards.</p>
+        </div>
+
+        <div class="card" data-cat="sw">
+          <div class="card-top"><h3>Intrusion Detection Dashboard</h3><span class="card-metric">−40% response</span></div>
+          <p>React dashboard with real-time alerts and live network security data.</p>
+        </div>
+
+        <div class="card" data-cat="sw">
+          <div class="card-top"><h3>Central Policy Management</h3><span class="card-metric">+30% workflow</span></div>
+          <p>React front end with reusable components and RESTful API integration.</p>
+        </div>
+
+        <div class="card" data-cat="sw">
+          <div class="card-top"><h3>NAT Clone Packet Catcher</h3><span class="card-metric">−25% manual</span></div>
+          <p>Real-time network traffic visualization front end for packet monitoring.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head"><span class="idx">04</span><h2>Skills</h2></div>
+      <p class="section-sub">Grouped the way I actually use them, not just listed.</p>
+      <div class="skill-grid">
+        <div class="skill-group">
+          <h4>Data &amp; Analytics</h4>
+          <div class="chip-row">
+            <span class="chip">Python (Pandas, NumPy, scikit-learn)</span>
+            <span class="chip">SQL (window fns, CTEs)</span>
+            <span class="chip">R</span>
+            <span class="chip">Power BI</span>
+            <span class="chip">ETL Automation</span>
+            <span class="chip">RapidMiner</span>
+            <span class="chip">KNIME</span>
+            <span class="chip">Forecasting</span>
+            <span class="chip">Feature Engineering</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <h4>Software &amp; Web</h4>
+          <div class="chip-row">
+            <span class="chip">React.js</span>
+            <span class="chip">Next.js</span>
+            <span class="chip">Tailwind CSS</span>
+            <span class="chip">Node.js</span>
+            <span class="chip">REST APIs</span>
+            <span class="chip">JWT Auth</span>
+            <span class="chip">i18next</span>
+            <span class="chip">Git</span>
+            <span class="chip">Docker</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="wrap">
+      <div class="contact-box">
+        <div>
+          <div class="section-head"><span class="idx">05</span><h2>Contact</h2></div>
+          <p style="color:#C7CBCE; max-width:420px; margin:0;">Open to Data Analyst, Analytics Engineer, and Software Engineer roles. Based in Riyadh — happy to work remote or relocate.</p>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:haiderkhan12264@gmail.com">haiderkhan12264@gmail.com</a>
+          <a href="tel:+966557828489">+966 55 782 8489</a>
+          <a href="https://linkedin.com/in/haider-k-a9a144107" target="_blank" rel="noopener">linkedin.com/in/haider-k-a9a144107</a>
+        </div>
+      </div>
+    </div>
+    <p class="foot-note">// Built by Haider Khan — data pipeline, meet software ship.</p>
+  </footer>
+</main>
+
+<script>
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('#projGrid .card');
+  buttons.forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      buttons.forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c=>{
+        c.style.display = (f==='all' || c.dataset.cat===f) ? '' : 'none';
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
