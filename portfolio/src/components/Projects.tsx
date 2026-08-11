@@ -9,7 +9,7 @@ interface Project {
   title: string;
   metric: string;
   desc: string;
-  cat: Category;
+  cats: Category[];
 }
 
 const PROJECTS: Project[] = [
@@ -17,49 +17,49 @@ const PROJECTS: Project[] = [
     title: "Car Price Prediction",
     metric: "85% acc.",
     desc: "Regression model with feature engineering to price used cars from listing data.",
-    cat: "data",
+    cats: ["data"],
   },
   {
     title: "Child Labor Risk Model",
     metric: "80% acc.",
     desc: "Classification model flagging risk using socio-economic indicators.",
-    cat: "data",
+    cats: ["data"],
   },
   {
     title: "Recommendation System",
     metric: "+25% engage",
     desc: "Collaborative + content-based filtering for personalized recommendations.",
-    cat: "data",
+    cats: ["data"],
   },
   {
     title: "Automated Inspection ETL",
     metric: "Tamimi",
     desc: "Raw inspection images → structured metadata → live KPI dashboards.",
-    cat: "data",
+    cats: ["data"],
   },
   {
     title: "Intrusion Detection Dashboard",
     metric: "−40% response",
     desc: "React dashboard with real-time alerts and live network security data.",
-    cat: "sw",
+    cats: ["sw"],
   },
   {
     title: "Central Policy Management",
     metric: "+30% workflow",
     desc: "React front end with reusable components and RESTful API integration.",
-    cat: "sw",
+    cats: ["sw"],
   },
   {
     title: "NAT Clone Packet Catcher",
     metric: "−25% manual",
     desc: "Real-time network traffic visualization front end for packet monitoring.",
-    cat: "sw",
+    cats: ["sw"],
   },
   {
-    title: "Lead Scraper SaaS",
-    metric: "Solo build",
-    desc: "Next.js + Prisma app with a decoupled FastAPI scraper service, Paddle billing, and per-lead credit metering — safe under concurrent requests and partial scrape failures.",
-    cat: "sw",
+    title: "AuditLeads",
+    metric: "Live SaaS",
+    desc: "Full-stack B2B SaaS for local-business prospecting — scrapes leads and scores each one's website weaknesses into an actionable Opportunity Score. Next.js, Prisma/Postgres, Paddle billing, a separate Python scraper worker, live paying customers.",
+    cats: ["sw", "data"],
   },
 ];
 
@@ -71,7 +71,9 @@ const FILTERS: { key: Filter; label: string }[] = [
 
 export default function Projects() {
   const [filter, setFilter] = useState<Filter>("all");
-  const visible = PROJECTS.filter((p) => filter === "all" || p.cat === filter);
+  const visible = PROJECTS.filter(
+    (p) => filter === "all" || p.cats.includes(filter)
+  );
 
   return (
     <section id="projects" className="alt">
