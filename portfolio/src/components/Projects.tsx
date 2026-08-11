@@ -55,6 +55,12 @@ const PROJECTS: Project[] = [
     desc: "Real-time network traffic visualization front end for packet monitoring.",
     cat: "sw",
   },
+  {
+    title: "Lead Scraper SaaS",
+    metric: "Solo build",
+    desc: "Next.js + Prisma app with a decoupled FastAPI scraper service, Paddle billing, and per-lead credit metering — safe under concurrent requests and partial scrape failures.",
+    cat: "sw",
+  },
 ];
 
 const FILTERS: { key: Filter; label: string }[] = [
