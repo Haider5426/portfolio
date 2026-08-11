@@ -24,8 +24,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${plexMono.variable} ${plexSans.variable}`}>
-      <body>{children}</body>
+    <html
+      lang="en"
+      className={`${plexMono.variable} ${plexSans.variable}`}
+      suppressHydrationWarning
+    >
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }
