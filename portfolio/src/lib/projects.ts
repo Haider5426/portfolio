@@ -40,6 +40,7 @@ export const PROJECTS: Project[] = [
     metric: "Live SaaS",
     desc: "Full-stack B2B SaaS for local-business prospecting — scrapes leads and scores each one's website weaknesses into an actionable Opportunity Score.",
     tracks: ["sw", "data"],
+    image: "/images/projects/auditleads.svg",
     featured: true,
     caseStudy: {
       tagline:
