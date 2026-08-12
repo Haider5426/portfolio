@@ -23,49 +23,35 @@
   --grid:           #DADFE3;
   --grid-strong:    #C2C9CF;
 
-  /* --- Pipeline accents ------------------------------------------------
-     The RAW -> CLEAN -> MODEL -> SHIP motif is the semantic accent system.
-     RAW/blue   = the Data & ML track
-     MODEL/amber= the Software & Web track
-     SHIP/green = outcomes, metrics, anything that shipped
+  /* --- Retired motif palette ---------------------------------------------
+     --raw/--model/--ship used to carry structural meaning (data track /
+     software track / outcome). That system is retired — a single accent
+     (--signal, below) now covers links, primary buttons, and emphasis
+     everywhere. These stay defined only because --amber/--good (the aurora
+     blobs) and legacy CSS still resolve through them; nothing should treat
+     their hue as meaningful anymore.
      -------------------------------------------------------------------- */
-  /* Each motif colour has two forms: the graphic value (fills, borders,
-     dots — needs 3:1) and a -text value dark enough for body copy at 4.5:1
-     on both the paper and the matching -soft background. */
   --raw:            #2A6F97;
   --raw-text:       #235C7E;
   --raw-soft:       #E4EEF3;
   --raw-strong:     #1F5678;
 
   --model:          #C98A2C;
-  --model-text:     #8A5A12;
   --model-soft:     #F6EBD8;
-  --model-strong:   #A06D1F;
 
   --ship:           #3B7A57;
-  --ship-text:      #2C5C41;
   --ship-soft:      #E4EFE8;
-  --ship-strong:    #2C5C41;
 
-  /* Semantic aliases — components reference these, not the raw motif names */
-  --accent-data:      var(--raw);
-  --accent-data-text: var(--raw-text);
-  --accent-data-soft: var(--raw-soft);
-  --accent-sw:        var(--model);
-  --accent-sw-text:   var(--model-text);
-  --accent-sw-soft:   var(--model-soft);
-  --accent-result:      var(--ship);
-  --accent-result-text: var(--ship-text);
-  --accent-result-soft: var(--ship-soft);
-
-  /* Primary interactive accent */
-  --signal:       var(--raw);
-  --signal-soft:  var(--raw-soft);
+  /* Primary interactive accent — the single accent color. Used consistently
+     for links, primary buttons, and emphasis; nothing else carries meaning
+     through colour anymore. */
+  --signal:        var(--raw);
+  --signal-text:   var(--raw-text); /* 4.5:1 variant for small/regular text */
+  --signal-soft:   var(--raw-soft);
   --signal-strong: var(--raw-strong);
 
-  /* Legacy motif names, aliased for CSS supplied against the original
-     palette (the tokens were renamed to --model/--ship in the design-system
-     pass). */
+  /* Aurora-only aliases — the hero glow keeps its three-colour wash on
+     purpose (an ambient background effect, not a meaning-bearing accent). */
   --amber: var(--model);
   --good:  var(--ship);
 
@@ -132,8 +118,6 @@
   --wrap-pad:   var(--space-6);
   --measure:    62ch;
   --section-y:  clamp(3.5rem, 6.4vw, 5.5rem);
-  --nav-w:      212px;
-  --grid-cell:  48px;
 
   /* --- Motion ---------------------------------------------------------- */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
@@ -166,11 +150,6 @@ body {
   font-size: var(--text-md);
   line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
-  background-image:
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: var(--grid-cell) var(--grid-cell);
-  background-position: -1px -1px;
 }
 
 a { color: var(--signal); }
@@ -200,8 +179,12 @@ img, svg { max-width: 100%; }
   margin: 0;
 }
 
+/* Sans is the primary voice for headings site-wide. Mono is reserved for
+   data (stats, numbers), the pipeline motif, and short tracked micro-labels
+   (see .t-micro) — sections that want the mono treatment for a heading
+   override it locally (case studies, the hero, the résumé document). */
 h2, .t-section {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   line-height: var(--leading-snug);
@@ -210,7 +193,7 @@ h2, .t-section {
 }
 
 h3, .t-sub {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-md);
   font-weight: var(--weight-semi);
   line-height: var(--leading-snug);
@@ -296,7 +279,7 @@ section.alt {
    ========================================================================== */
 
 .btn {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-sm);
   font-weight: var(--weight-semi);
   padding: var(--space-3) var(--space-5);
@@ -318,141 +301,38 @@ section.alt {
 .btn.primary:hover { background: var(--signal-strong); border-color: var(--signal-strong); }
 
 /* ==========================================================================
-   PIPELINE STRIP — signature element
+   LEDGER — a plain stat grid, not a bordered table
    ========================================================================== */
 
-.pipeline {
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.stat-tile {
   background: var(--paper-raised);
   border: 1px solid var(--grid);
-  border-radius: var(--radius-xs);
-  padding: var(--space-6) var(--space-5) var(--space-5);
-  overflow: hidden;
-  position: relative;
+  border-radius: var(--radius-sm);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
 }
 
-.pipeline-label {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  font-weight: var(--weight-semi);
-  color: var(--ink-soft);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
-  margin: 0 0 var(--space-4);
-}
-
-.pipeline-track {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  position: relative;
-}
-
-.stage {
-  position: relative;
-  padding: var(--space-3) var(--space-3) var(--space-4);
-  border-right: 1px dashed var(--grid);
-}
-.stage:last-child { border-right: none; }
-
-.stage .tag {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-semi);
-  color: var(--ink);
-  display: inline-block;
+.stat-tile-num {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-2xl);
+  color: var(--signal);
+  line-height: 1;
   margin-bottom: var(--space-2);
 }
 
-.stage .num {
-  font-family: var(--font-mono);
-  font-weight: var(--weight-bold);
-  font-size: var(--text-xl);
-  display: block;
-  line-height: 1;
-}
-
-.stage .cap {
-  font-size: var(--text-xs);
+.stat-tile-text {
+  margin: 0;
+  font-size: var(--text-base);
   color: var(--ink-soft);
-  margin-top: var(--space-1);
-  display: block;
-  line-height: var(--leading-snug);
-}
-
-/* Each stage carries its motif colour — this is where the accent
-   system is defined visually, and every other accent use echoes it. */
-.stage[data-stage="raw"]   .num { color: var(--raw-text); }
-.stage[data-stage="clean"] .num { color: var(--raw-text); }
-.stage[data-stage="model"] .num { color: var(--model-text); }
-.stage[data-stage="ship"]  .num { color: var(--ship-text); }
-
-.stage::after {
-  content: "→";
-  position: absolute;
-  right: -11px;
-  top: 20px;
-  color: var(--ink-faint);
-  font-size: var(--text-sm);
-  z-index: 2;
-  background: var(--paper-raised);
-  width: 16px;
-  text-align: center;
-}
-.stage:last-child::after { content: ""; }
-
-@media (max-width: 700px) {
-  .pipeline-track { grid-template-columns: 1fr; }
-  .stage {
-    border-right: none;
-    border-bottom: 1px dashed var(--grid);
-    padding: var(--space-3) 0;
-  }
-  .stage::after { content: "↓"; right: auto; left: 0; top: auto; bottom: -9px; }
-  .stage:last-child { border-bottom: none; }
-}
-
-/* ==========================================================================
-   LEDGER
-   ========================================================================== */
-
-.ledger {
-  border: 1px solid var(--grid);
-  border-radius: var(--radius-sm);
-  background: var(--paper-raised);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
-}
-
-.ledger-row {
-  display: grid;
-  grid-template-columns: 40px 1fr auto;
-  gap: var(--space-4);
-  align-items: center;
-  padding: var(--space-3) var(--space-5);
-  border-bottom: 1px solid var(--grid);
-  transition: background-color var(--dur-fast) var(--ease);
-}
-.ledger-row:last-child { border-bottom: none; }
-.ledger-row:hover { background: var(--paper); }
-
-.ledger-row .row-idx {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  color: var(--ink-faint);
-}
-
-.ledger-row .row-text { font-size: var(--text-base); }
-
-.ledger-row .row-stat {
-  font-family: var(--font-mono);
-  font-weight: var(--weight-bold);
-  font-size: var(--text-xl);
-  color: var(--accent-result);
-  white-space: nowrap;
-}
-
-@media (max-width: 600px) {
-  .ledger-row { grid-template-columns: 28px 1fr; grid-template-rows: auto auto; }
-  .ledger-row .row-stat { grid-column: 2; font-size: var(--text-md); }
+  line-height: var(--leading-body);
 }
 
 /* ==========================================================================
@@ -497,20 +377,6 @@ section.alt {
   margin-left: auto;
 }
 
-.log-tags { display: flex; gap: var(--space-2); margin: var(--space-2) 0 var(--space-3); }
-
-.tag-pill {
-  font-family: var(--font-mono);
-  font-size: var(--text-2xs);
-  font-weight: var(--weight-semi);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-  padding: 3px var(--space-2);
-  border-radius: var(--radius-pill);
-}
-.tag-pill.data { background: var(--accent-data-soft); color: var(--accent-data-text); }
-.tag-pill.sw   { background: var(--accent-sw-soft);   color: var(--accent-sw-text); }
-
 ul.log-list { margin: 0; padding-left: var(--space-5); }
 ul.log-list li {
   margin-bottom: var(--space-2);
@@ -531,7 +397,7 @@ ul.log-list li {
 
 .filter-btn {
   display: inline-block;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-xs);
   padding: var(--space-2) var(--space-4);
   border: 1px solid var(--grid);
@@ -613,13 +479,10 @@ ul.log-list li {
   transition: border-color var(--dur-fast) var(--ease),
               transform var(--dur-med) var(--ease),
               box-shadow var(--dur-med) var(--ease);
-  /* the track accent, set per-card via data-track */
-  border-top: 2px solid var(--card-accent, var(--grid));
 }
 .card:hover,
 .card-link:focus-visible {
-  border-color: var(--grid-strong);
-  border-top-color: var(--card-accent, var(--signal));
+  border-color: var(--signal);
   transform: translateY(-4px) scale(1.008);
   box-shadow: var(--shadow-lg);
 }
@@ -627,25 +490,6 @@ ul.log-list li {
 @media (prefers-reduced-motion: reduce) {
   .card { transition: border-color var(--dur-fast) var(--ease); }
   .card:hover, .card-link:focus-visible { transform: none; }
-}
-
-/* Semantic accent by track — echoes the pipeline motif. */
-.card[data-track="data"] {
-  --card-accent: var(--accent-data);
-  --card-accent-text: var(--accent-data-text);
-}
-.card[data-track="sw"] {
-  --card-accent: var(--accent-sw);
-  --card-accent-text: var(--accent-sw-text);
-}
-
-.card-illustration {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius-xs);
-  border: 1px solid var(--grid);
-  background: var(--paper);
 }
 
 .card-top {
@@ -661,9 +505,9 @@ ul.log-list li {
 .card-metric {
   font-family: var(--font-mono);
   font-weight: var(--weight-bold);
-  color: var(--accent-result-text);
+  color: var(--signal-text);
   font-size: var(--text-sm);
-  background: var(--accent-result-soft);
+  background: var(--signal-soft);
   padding: 3px var(--space-2);
   border-radius: var(--radius-pill);
   white-space: nowrap;
@@ -703,10 +547,10 @@ ul.log-list li {
 .card-cta {
   margin-top: auto;
   padding-top: var(--space-1);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-xs);
   font-weight: var(--weight-semi);
-  color: var(--card-accent-text, var(--signal));
+  color: var(--signal-text);
   opacity: 0;
   transform: translateX(-4px);
   transition: opacity var(--dur-fast) var(--ease),
@@ -744,19 +588,17 @@ ul.log-list li {
 .case-back:hover { color: var(--signal); }
 
 .case-head {
-  border-left: 3px solid var(--card-accent, var(--signal));
+  border-left: 3px solid var(--signal);
   padding-left: var(--space-6);
   margin-bottom: var(--space-10);
 }
-.case-head[data-track="data"] { --card-accent: var(--accent-data); }
-.case-head[data-track="sw"]   { --card-accent: var(--accent-sw); }
 
 .case-eyebrow {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wider);
-  color: var(--card-accent, var(--signal));
+  color: var(--signal);
   margin: 0 0 var(--space-3);
 }
 
@@ -810,6 +652,7 @@ ul.log-list li {
 .case-section { padding: 0; margin-bottom: var(--space-12); }
 
 .case-section h2 {
+  font-family: var(--font-mono);
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
@@ -860,14 +703,8 @@ ul.log-list li {
   height: 12px;
   border-radius: 50%;
   background: var(--paper);
-  border: 2px solid var(--stage-color, var(--signal));
+  border: 2px solid var(--signal);
 }
-.case-arch li[data-arch-i="0"] { --stage-color: var(--raw); }
-.case-arch li[data-arch-i="1"] { --stage-color: var(--raw); }
-.case-arch li[data-arch-i="2"] { --stage-color: var(--model); }
-.case-arch li[data-arch-i="3"] { --stage-color: var(--model); }
-/* However many steps a case study has, the last one is where it ships. */
-.case-arch li:last-child { --stage-color: var(--ship); }
 
 .case-live {
   color: var(--signal);
@@ -884,7 +721,7 @@ ul.log-list li {
   font-size: var(--text-xs);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-wide);
-  color: var(--stage-color, var(--signal));
+  color: var(--signal);
   margin-bottom: var(--space-2);
 }
 .arch-detail { margin: 0 !important; }
@@ -895,7 +732,7 @@ ul.log-list li {
   gap: var(--space-4);
 }
 .case-result {
-  background: var(--accent-result-soft);
+  background: var(--signal-soft);
   border: 1px solid var(--grid);
   border-radius: var(--radius-xs);
   padding: var(--space-4);
@@ -905,7 +742,7 @@ ul.log-list li {
   font-family: var(--font-mono);
   font-size: var(--text-xl);
   font-weight: var(--weight-bold);
-  color: var(--accent-result);
+  color: var(--signal);
   line-height: 1;
   margin-bottom: var(--space-2);
 }
@@ -937,15 +774,18 @@ ul.log-list li {
 @media (max-width: 700px) { .skill-grid { grid-template-columns: 1fr; } }
 
 .skill-group h3 {
+  /* A short, tracked, all-caps category tag reads as a micro-label rather
+     than a heading, so it keeps the mono treatment. Plain ink now — no
+     per-track colour, since colour no longer differentiates categories
+     anywhere on the site. */
   font-family: var(--font-mono);
   font-size: var(--text-sm);
   font-weight: var(--weight-semi);
+  color: var(--ink);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   margin: 0 0 var(--space-3);
 }
-.skill-group[data-track="data"] h3 { color: var(--accent-data-text); }
-.skill-group[data-track="sw"]   h3 { color: var(--accent-sw-text); }
 
 .chip-row { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 
@@ -975,7 +815,9 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   align-items: center;
 }
 .contact-box h2 { color: var(--ink-inverse); }
-.contact-box .section-head .idx { color: var(--model); }
+/* Signal blue reads low-contrast on the near-black contact panel; match the
+   box's other muted labels instead of introducing a second accent. */
+.contact-box .section-head .idx { color: var(--ink-inverse-soft); }
 
 .contact-copy {
   color: var(--ink-inverse-soft);
@@ -995,8 +837,9 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
   color: var(--ink-inverse);
-  background: rgba(59, 122, 87, 0.22);
-  border: 1px solid rgba(122, 190, 154, 0.5);
+  /* Single accent, not the retired green — rgba of --raw/--signal. */
+  background: rgba(42, 111, 151, 0.25);
+  border: 1px solid rgba(120, 170, 200, 0.55);
   border-radius: var(--radius-pill);
   padding: var(--space-1) var(--space-3);
   margin: 0 0 var(--space-5);
@@ -1005,7 +848,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #7ABE9A;
+  background: #6FB3E0;
   flex: none;
 }
 .contact-cta { margin-top: var(--space-6); border-color: var(--ink-inverse); color: var(--ink-inverse); }
@@ -1065,7 +908,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   gap: var(--space-4);
 }
 .foot-links a {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-xs);
   color: var(--ink-faint);
   text-decoration: none;
@@ -1134,14 +977,14 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   margin-bottom: var(--space-8);
 }
 .resume-head h1 {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-2xl);
   font-weight: var(--weight-bold);
   margin: 0 0 var(--space-1);
   letter-spacing: var(--tracking-tight);
 }
 .resume-role {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-base);
   color: var(--signal);
   margin: 0 0 var(--space-3);
@@ -1159,6 +1002,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
 .resume-section { padding: 0; margin-bottom: var(--space-8); }
 .resume-section:last-child { margin-bottom: 0; }
 .resume-section > h2 {
+  font-family: var(--font-mono);
   font-size: var(--text-sm);
   text-transform: uppercase;
   letter-spacing: var(--tracking-wide);
@@ -1253,8 +1097,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   }
 
   .no-print,
-  .rail,
-  .topbar,
+  .site-nav,
   .skip-link { display: none !important; }
 
   .page, .resume-page { padding: 0 !important; }
@@ -1278,7 +1121,8 @@ footer { padding: var(--section-y) 0 var(--space-12); }
 }
 
 /* ==========================================================================
-   NAV — fixed rail on desktop, sticky top bar below the rail breakpoint
+   NAV — one small sticky top bar at every breakpoint. Logo + a few links,
+   no fixed sidebar, no section numbering.
    ========================================================================== */
 
 .brand {
@@ -1301,78 +1145,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   flex: none;
 }
 
-/* --- Desktop rail ----------------------------------------------------- */
-
-.rail { display: none; }
-
-@media (min-width: 1100px) {
-  .rail {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: var(--nav-w);
-    height: 100vh;
-    padding: var(--space-10) var(--space-6);
-    border-right: 1px solid var(--grid);
-    background: var(--paper);
-    z-index: 40;
-  }
-
-  .rail-role {
-    font-family: var(--font-mono);
-    font-size: var(--text-xs);
-    color: var(--ink-faint);
-    margin: var(--space-2) 0 var(--space-10);
-    padding-left: calc(8px + var(--space-2));
-  }
-
-  .rail-nav ul { list-style: none; margin: 0; padding: 0; }
-  .rail-nav li { margin-bottom: var(--space-1); }
-
-  .rail-nav a {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2) 0;
-    text-decoration: none;
-    color: var(--ink-faint);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    transition: color var(--dur-fast) var(--ease);
-  }
-
-  /* Growing indicator line — the active-state cue. */
-  .rail-line {
-    display: block;
-    width: 16px;
-    height: 1px;
-    background: var(--grid-strong);
-    flex: none;
-    transition: width var(--dur-med) var(--ease),
-                background-color var(--dur-med) var(--ease);
-  }
-
-  .rail-idx { font-size: var(--text-2xs); color: var(--ink-faint); }
-
-  .rail-nav a:hover { color: var(--ink); }
-  .rail-nav a:hover .rail-line { width: 28px; background: var(--ink-soft); }
-
-  .rail-nav a.is-active { color: var(--signal); }
-  .rail-nav a.is-active .rail-line { width: 36px; background: var(--signal); }
-  .rail-nav a.is-active .rail-idx { color: var(--signal); }
-  .rail-nav a.is-active .rail-label { font-weight: var(--weight-semi); }
-
-  .topbar { display: none; }
-
-  /* Offset the document so the rail never overlaps content. */
-  .page { padding-left: var(--nav-w); }
-}
-
-/* --- Mobile / tablet top bar ------------------------------------------ */
-
-.topbar {
+.site-nav {
   position: sticky;
   top: 0;
   z-index: 50;
@@ -1382,55 +1155,44 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   border-bottom: 1px solid var(--grid);
 }
 
-.topbar-inner {
+.site-nav-inner {
   max-width: var(--wrap-max);
   margin: 0 auto;
-  padding: var(--space-3) var(--wrap-pad);
+  padding: var(--space-4) var(--wrap-pad);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
 }
 
-.topbar-nav {
-  display: flex;
-  gap: var(--space-5);
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.topbar-nav::-webkit-scrollbar { display: none; }
+.site-nav nav { display: flex; gap: var(--space-6); }
 
-.topbar-nav a {
+.site-nav nav a {
   color: var(--ink-soft);
   text-decoration: none;
+  font-family: var(--font-sans);
   font-size: var(--text-sm);
-  font-family: var(--font-mono);
-  white-space: nowrap;
-  padding-bottom: 2px;
-  border-bottom: 2px solid transparent;
-  transition: color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease);
+  font-weight: var(--weight-medium);
+  transition: color var(--dur-fast) var(--ease);
 }
-.topbar-nav a:hover { color: var(--ink); }
-.topbar-nav a.is-active { color: var(--signal); border-bottom-color: var(--signal); }
+.site-nav nav a:hover { color: var(--ink); }
+.site-nav nav a.is-active { color: var(--signal); font-weight: var(--weight-semi); }
 
-@media (max-width: 720px) {
-  .topbar-inner { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
-  .topbar-nav { gap: var(--space-4); width: 100%; }
-  .topbar-nav a { font-size: var(--text-xs); }
+@media (max-width: 480px) {
+  .site-nav nav { gap: var(--space-4); }
 }
 
 /* ==========================================================================
    HERO
    ========================================================================== */
 
-/* Aurora / mesh-gradient background — supplied CSS, merged in below. Replaces
-   the earlier static two-gradient wash with three independently drifting
-   blurred blobs on --signal/--amber/--good. */
+/* Aurora / mesh-gradient background. A soft glow on clean paper — no grid,
+   no technical texture, nothing competing with the headline. */
 .hero {
   padding: var(--space-12) 0 var(--space-10);
   position: relative;
   overflow: hidden;
+  background-color: var(--paper);
 }
 
 .hero-aurora {
@@ -1488,14 +1250,14 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   display: grid;
   grid-template-columns: minmax(0, 1fr) clamp(200px, 23vw, 280px);
   grid-template-areas:
-    "eyebrow  eyebrow"
+    "tags     tags"
     "headline headline"
     "body     portrait";
   column-gap: var(--space-10);
   align-items: start;
 }
-.hero-grid > .eyebrow  { grid-area: eyebrow; }
-.hero-grid > .headline { grid-area: headline; }
+.hero-grid > .hero-tags { grid-area: tags; }
+.hero-grid > .headline  { grid-area: headline; }
 .hero-body     { grid-area: body; align-self: center; min-width: 0; }
 .hero-portrait { grid-area: portrait; margin: 0; align-self: center; }
 
@@ -1532,33 +1294,38 @@ footer { padding: var(--section-y) 0 var(--space-12); }
        leading with it keeps LCP off the image's network round trip. The face
        still sits above the fold directly under it. */
     grid-template-areas:
-      "eyebrow"
+      "tags"
       "headline"
       "portrait"
       "body";
     row-gap: var(--space-5);
   }
   .hero-portrait { width: 168px; align-self: start; }
-  .hero-grid > .eyebrow { margin-bottom: 0; }
+  .hero-grid > .hero-tags { margin-bottom: 0; }
   .hero-grid > .headline { margin-bottom: 0; }
 }
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--signal);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wider);
-  margin: 0 0 var(--space-5);
+/* Plain tech-tag pills — no per-tag colour coding, just a quiet list of
+   what this was built with. */
+.hero-tags {
   display: flex;
-  align-items: center;
-  gap: var(--space-3);
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
 }
-.eyebrow::before { content: "//"; color: var(--ink-faint); }
+.tech-pill {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--ink-soft);
+  background: var(--paper-raised);
+  border: 1px solid var(--grid);
+  border-radius: var(--radius-pill);
+  padding: var(--space-1) var(--space-3);
+}
 
 h1.headline {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-hero);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
@@ -1585,6 +1352,32 @@ p.lede {
 .lede strong {
   color: var(--ink);
   font-weight: var(--weight-semi);
+}
+
+/* Simple inline stats — a hairline divider and three numbers, not a
+   bordered table. */
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--grid);
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+.stat-num {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-bold);
+  font-size: var(--text-2xl);
+  color: var(--signal);
+  line-height: 1;
+}
+.stat-label {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
 }
 
 /* ==========================================================================
@@ -1623,19 +1416,10 @@ p.lede {
   animation: settle-motion 320ms var(--ease) both;
 }
 
-/* The pipeline stages cascade after the strip itself has arrived. It sits
-   below the fold, so its timing does not affect LCP. */
-.pipeline .stage {
-  opacity: 0;
-  animation: settle var(--dur-med) var(--ease) forwards;
-  animation-delay: calc(360ms + var(--stage-i, 0) * 110ms);
-}
-
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal,
-  .reveal-motion,
-  .pipeline .stage {
+  .reveal-motion {
     animation: none;
     opacity: 1;
     transform: none;

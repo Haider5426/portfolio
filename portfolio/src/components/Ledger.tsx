@@ -1,28 +1,23 @@
-const ROWS = [
+const STATS = [
   {
-    idx: "01",
-    text: "Replaced manual spreadsheet reporting with automated ETL workflows at Tamimi",
     stat: "−70% time",
+    text: "Replaced manual spreadsheet reporting with automated ETL workflows at Tamimi",
   },
   {
-    idx: "02",
-    text: "Structured data intake pipelines with validation checks",
     stat: "−90% errors",
+    text: "Structured data intake pipelines with validation checks",
   },
   {
-    idx: "03",
-    text: "End-to-end analytics & ML projects delivered for clients worldwide (Fiverr, since 2018)",
     stat: "100+ projects",
+    text: "End-to-end analytics & ML projects delivered for clients worldwide (Fiverr, since 2018)",
   },
   {
-    idx: "04",
-    text: "Predictive models shipped for regression & classification tasks",
     stat: "up to 85%",
+    text: "Predictive models shipped for regression & classification tasks",
   },
   {
-    idx: "05",
-    text: "KPI dashboards & cross-site trend reporting for management",
     stat: "+35% speed",
+    text: "KPI dashboards & cross-site trend reporting for management",
   },
 ];
 
@@ -37,12 +32,11 @@ export default function Ledger() {
         <p className="section-sub">
           The numbers behind five years of analytics and engineering work.
         </p>
-        <div className="ledger">
-          {ROWS.map((row) => (
-            <div className="ledger-row" key={row.idx}>
-              <span className="row-idx">{row.idx}</span>
-              <span className="row-text">{row.text}</span>
-              <span className="row-stat">{row.stat}</span>
+        <div className="stat-grid">
+          {STATS.map((s) => (
+            <div className="stat-tile" key={s.text}>
+              <span className="stat-tile-num">{s.stat}</span>
+              <p className="stat-tile-text">{s.text}</p>
             </div>
           ))}
         </div>

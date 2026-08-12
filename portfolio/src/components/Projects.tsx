@@ -11,15 +11,6 @@ const FILTERS = [
 function CardBody({ project }: { project: Project }) {
   return (
     <>
-      {project.image && (
-        <img
-          className="card-illustration"
-          src={project.image}
-          alt=""
-          width={400}
-          height={220}
-        />
-      )}
       <div className="card-top">
         <h3>{project.title}</h3>
         <span className="card-metric">{project.metric}</span>
@@ -38,11 +29,8 @@ function ProjectCard({
   compact?: boolean;
 }) {
   const className = `card${compact ? " card-compact" : ""}`;
-  // data-tracks drives CSS filtering; data-track picks the accent colour.
-  const attrs = {
-    "data-tracks": project.tracks.join(" "),
-    "data-track": project.tracks[0],
-  };
+  // data-tracks drives CSS filtering (see .projects-filterable rules).
+  const attrs = { "data-tracks": project.tracks.join(" ") };
 
   return project.slug ? (
     <Link className={`${className} card-link`} href={`/projects/${project.slug}`} {...attrs}>
