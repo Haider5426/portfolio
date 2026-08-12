@@ -1,3 +1,6 @@
+import Image from "next/image";
+import portrait from "../../public/images/pfp-hero.jpg";
+
 const STAGES = [
   { id: "raw", tag: "01 · RAW", num: "300+", cap: "records/mo ingested & validated" },
   { id: "clean", tag: "02 · CLEAN", num: "90%", cap: "manual errors removed" },
@@ -8,32 +11,52 @@ const STAGES = [
 export default function Hero() {
   return (
     <section id="intro" className="hero" aria-labelledby="hero-headline">
-      <div className="wrap">
-        <p className="eyebrow reveal" data-reveal="1">
-          Data Analyst &amp; Software Engineer, Riyadh
-        </p>
+      <div className="wrap hero-wrap">
+        <div className="hero-grid">
+          <p className="eyebrow reveal" data-reveal="1">
+            Data Analyst &amp; Software Engineer, Riyadh
+          </p>
 
-        <h1 id="hero-headline" className="headline reveal" data-reveal="2">
-          Raw data in.
-          <br />
-          Shipped <span className="accent">product</span> out.
-        </h1>
+          <h1 id="hero-headline" className="headline reveal-motion">
+            Raw data in.
+            <br />
+            Shipped <span className="accent">product</span> out.
+          </h1>
 
-        <p className="lede reveal" data-reveal="3">
-          I turn messy operational data into software people actually use. I&rsquo;ve
-          shipped <strong>AuditLeads</strong> — a live B2B SaaS with paying
-          customers — digitized inspection workflows that cut reporting time
-          70%, and delivered <strong>100+ analytics and ML projects</strong>{" "}
-          since 2018.
-        </p>
+          <div className="hero-body reveal" data-reveal="3">
+            <p className="lede">
+              I turn messy operational data into software people actually use.
+              I&rsquo;ve shipped <strong>AuditLeads</strong> — a live B2B SaaS
+              with paying customers — digitized inspection workflows that cut
+              reporting time 70%, and delivered{" "}
+              <strong>100+ analytics and ML projects</strong> since 2018.
+            </p>
+            <div className="hero-actions">
+              <a href="#projects" className="btn primary">
+                See the work
+              </a>
+              <a href="#contact" className="btn">
+                Get in touch
+              </a>
+            </div>
+          </div>
 
-        <div className="hero-actions reveal" data-reveal="4">
-          <a href="#projects" className="btn primary">
-            See the work
-          </a>
-          <a href="#contact" className="btn">
-            Get in touch
-          </a>
+          {/* Eager (it is above the fold) but deliberately NOT preloaded: the
+              headline is the LCP element, and a high-priority image preload
+              would compete with the font on the critical path. */}
+          <figure className="hero-portrait reveal-motion">
+            <div className="portrait-frame">
+              <Image
+                src={portrait}
+                alt="Haider Khan"
+                sizes="(max-width: 900px) 168px, 280px"
+                placeholder="blur"
+                loading="eager"
+                quality={62}
+                className="portrait-img"
+              />
+            </div>
+          </figure>
         </div>
 
         {/* Signature moment: the pipeline fills stage by stage on load. */}
