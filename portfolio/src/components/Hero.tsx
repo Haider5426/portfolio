@@ -11,6 +11,14 @@ const STAGES = [
 export default function Hero() {
   return (
     <section id="intro" className="hero" aria-labelledby="hero-headline">
+      {/* Decorative aurora backdrop — must be a direct child of .hero, the
+          CSS keys off that relationship for both positioning and stacking. */}
+      <div className="hero-aurora" aria-hidden="true">
+        <span className="blob b1" />
+        <span className="blob b2" />
+        <span className="blob b3" />
+      </div>
+
       <div className="wrap hero-wrap">
         <div className="hero-grid">
           <p className="eyebrow reveal" data-reveal="1">
@@ -43,8 +51,12 @@ export default function Hero() {
 
           {/* Eager (it is above the fold) but deliberately NOT preloaded: the
               headline is the LCP element, and a high-priority image preload
-              would compete with the font on the critical path. */}
-          <figure className="hero-portrait reveal-motion">
+              would compete with the font on the critical path.
+              No entrance transform here (unlike the headline): on a busier
+              main thread — e.g. with the aurora's blur+animation load — a
+              transform on this large a box has enough time-to-run that
+              Chrome's shift observer picks it up and scores it as CLS. */}
+          <figure className="hero-portrait">
             <div className="portrait-frame">
               <Image
                 src={portrait}

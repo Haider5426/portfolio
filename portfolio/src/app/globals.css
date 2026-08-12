@@ -63,6 +63,12 @@
   --signal-soft:  var(--raw-soft);
   --signal-strong: var(--raw-strong);
 
+  /* Legacy motif names, aliased for CSS supplied against the original
+     palette (the tokens were renamed to --model/--ship in the design-system
+     pass). */
+  --amber: var(--model);
+  --good:  var(--ship);
+
   /* --- Spacing scale (4px base) ---------------------------------------- */
   --space-1:  0.25rem;  /*  4px */
   --space-2:  0.5rem;   /*  8px */
@@ -1418,21 +1424,63 @@ footer { padding: var(--section-y) 0 var(--space-12); }
    HERO
    ========================================================================== */
 
-/* Light-theme colour wash — a signal-blue glow with a touch of amber so the
-   first screen has depth instead of flat paper. Painted as the section's own
-   background rather than a pseudo-element: a separate absolutely-positioned
-   box gets re-laid-out as the hero settles, which Chrome scores as a layout
-   shift. A background cannot shift. The gradients are semi-transparent, so
-   the body's grid still reads through them. */
+/* Aurora / mesh-gradient background — supplied CSS, merged in below. Replaces
+   the earlier static two-gradient wash with three independently drifting
+   blurred blobs on --signal/--amber/--good. */
 .hero {
   padding: var(--space-12) 0 var(--space-10);
   position: relative;
-  background-image:
-    radial-gradient(52% 38% at 20% 18%, rgba(42, 111, 151, 0.16), transparent 68%),
-    radial-gradient(42% 34% at 82% 22%, rgba(201, 138, 44, 0.10), transparent 70%),
-    radial-gradient(60% 32% at 50% 96%, rgba(59, 122, 87, 0.06), transparent 72%);
-  background-repeat: no-repeat;
+  overflow: hidden;
 }
+
+.hero-aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 92%);
+  mask-image: linear-gradient(to bottom, black 55%, transparent 92%);
+  z-index: 0;
+}
+
+.hero-aurora .blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  will-change: transform;
+}
+
+.hero-aurora .b1 {
+  width: 520px; height: 520px;
+  background: radial-gradient(circle, var(--signal) 0%, transparent 70%);
+  opacity: 0.4; top: -200px; left: -140px;
+  animation: driftA 22s ease-in-out infinite;
+}
+.hero-aurora .b2 {
+  width: 460px; height: 460px;
+  background: radial-gradient(circle, var(--amber) 0%, transparent 70%);
+  opacity: 0.28; top: -80px; right: -160px;
+  animation: driftB 26s ease-in-out infinite;
+}
+.hero-aurora .b3 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, var(--good) 0%, transparent 70%);
+  opacity: 0.22; top: 120px; left: 280px;
+  animation: driftC 30s ease-in-out infinite;
+}
+
+@keyframes driftA { 0%,100%{transform:translate(0,0)} 50%{transform:translate(40px,50px)} }
+@keyframes driftB { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-50px,40px)} }
+@keyframes driftC { 0%,100%{transform:translate(0,0)} 50%{transform:translate(30px,-40px)} }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-aurora .blob { animation: none; }
+}
+
+/* :not(.hero-aurora) added — without it this catch-all ties .hero-aurora's
+   own position/z-index at equal specificity and, being later in the file,
+   would win, collapsing the aurora out of its absolute overlay position. */
+.hero > *:not(.hero-aurora) { position: relative; z-index: 1; }
 
 .hero-wrap { max-width: var(--wrap-hero); }
 
