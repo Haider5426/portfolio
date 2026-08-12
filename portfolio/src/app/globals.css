@@ -137,7 +137,13 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html {
-  scroll-behavior: smooth;
+  /* Smooth scrolling is enabled by a small inline script after the initial
+     load (see layout.tsx) — not here. If a hash URL is loaded directly,
+     scroll-behavior:smooth would animate the browser's native jump to the
+     anchor, and layout settling mid-animation can derail it back to the
+     top while the address bar still shows the hash. Instant by default
+     sidesteps that; smooth still applies to in-page nav clicks afterward. */
+  scroll-behavior: auto;
   /* keep anchored sections clear of the mobile top bar */
   scroll-padding-top: var(--space-20);
 }

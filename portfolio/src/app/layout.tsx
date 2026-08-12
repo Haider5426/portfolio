@@ -78,6 +78,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           Skip to content
         </a>
         {children}
+        {/* Enables smooth scrolling only after the initial load finishes, so
+            a direct hash-URL load (e.g. /#contact) uses the browser's plain
+            instant jump instead of an animated scroll that in-flight layout
+            settling can derail back to the top. See globals.css. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.addEventListener("load",function(){if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){document.documentElement.style.scrollBehavior="smooth"}})`,
+          }}
+        />
       </body>
     </html>
   );
