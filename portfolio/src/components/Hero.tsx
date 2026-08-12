@@ -36,9 +36,7 @@ export default function Hero() {
 
           <div className="hero-body reveal" data-reveal="3">
             <p className="lede">
-              I&rsquo;m a data analyst and software engineer who turns messy
-              operational data into software people actually use — from ETL
-              pipelines and predictive models to the products that ship them.
+              Turning raw data into software people actually use.
             </p>
             <div className="hero-actions">
               <a href="#projects" className="btn primary">

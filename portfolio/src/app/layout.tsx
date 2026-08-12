@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { Geist, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-// Only the weights actually referenced by the type scale — every extra weight
-// is another font file on the critical path.
+// IBM Plex Mono now covers a narrower job — small data labels, stats, and
+// code-like accents — so only the weights that scale actually uses.
 const plexMono = IBM_Plex_Mono({
   variable: "--font-plex-mono",
   subsets: ["latin"],
@@ -11,10 +11,11 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
+// Geist is a variable font — no weight array needed, the full range ships
+// in one file.
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
   display: "swap",
 });
 
@@ -69,7 +70,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${plexMono.variable} ${plexSans.variable}`}
+      className={`${plexMono.variable} ${geistSans.variable}`}
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>

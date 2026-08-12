@@ -127,7 +127,7 @@
 
   /* --- Fonts ----------------------------------------------------------- */
   --font-mono: var(--font-plex-mono), ui-monospace, monospace;
-  --font-sans: var(--font-plex-sans), system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
 }
 
 /* ==========================================================================
@@ -603,7 +603,7 @@ ul.log-list li {
 }
 
 .case-title {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: var(--text-3xl);
   font-weight: var(--weight-bold);
   line-height: var(--leading-tight);
@@ -652,7 +652,9 @@ ul.log-list li {
 .case-section { padding: 0; margin-bottom: var(--space-12); }
 
 .case-section h2 {
-  font-family: var(--font-mono);
+  /* Inherits var(--font-sans) from the base h2 rule — case-study step
+     headings ("Problem", "Approach", ...) are real section headings, not
+     data labels, so mono is no longer reserved for them either. */
   display: flex;
   align-items: baseline;
   gap: var(--space-3);
@@ -1300,7 +1302,19 @@ footer { padding: var(--section-y) 0 var(--space-12); }
       "body";
     row-gap: var(--space-5);
   }
-  .hero-portrait { width: 168px; align-self: start; }
+  .hero-portrait {
+    /* Containment for the frame's shadow and the decorative offset plate
+       (see .portrait-frame::after): 16px of reserved padding is enough for
+       both to render in full, and overflow:hidden guarantees neither can
+       visibly escape this element's own box — this is the narrow-viewport
+       range (360-430px) where that previously overflowed. The photo itself
+       stays 168px: that reserve plus the frame's own 8px padding (x2) both
+       come out of the extra width below, not out of the visible image. */
+    width: 200px;
+    padding: 0 16px 16px 0;
+    overflow: hidden;
+    align-self: start;
+  }
   .hero-grid > .hero-tags { margin-bottom: 0; }
   .hero-grid > .headline { margin-bottom: 0; }
 }
