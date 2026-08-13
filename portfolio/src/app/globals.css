@@ -1180,7 +1180,7 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   gap: var(--space-4);
 }
 
-.site-nav nav { display: flex; gap: var(--space-6); }
+.site-nav nav { display: flex; gap: var(--space-6); position: relative; }
 
 .site-nav nav a {
   color: var(--ink-soft);
@@ -1192,6 +1192,26 @@ footer { padding: var(--section-y) 0 var(--space-12); }
 }
 .site-nav nav a:hover { color: var(--ink); }
 .site-nav nav a.is-active { color: var(--signal); font-weight: var(--weight-semi); }
+
+/* Underline that slides beneath the active link instead of the highlight
+   just snapping between sections — position/width set inline from
+   measured link geometry (see Nav.tsx). */
+.nav-indicator {
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  height: 2px;
+  background: var(--signal);
+  border-radius: var(--radius-pill);
+  opacity: 0;
+  transition: transform var(--dur-med) var(--ease), width var(--dur-med) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-indicator { transition: opacity var(--dur-fast) var(--ease); }
+}
 
 @media (max-width: 480px) {
   .site-nav nav { gap: var(--space-4); }
