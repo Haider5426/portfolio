@@ -859,6 +859,13 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   background: #6FB3E0;
   flex: none;
 }
+.contact-invite {
+  color: var(--ink-inverse);
+  font-size: var(--text-lg);
+  font-weight: 500;
+  margin: 0 0 var(--space-4);
+}
+
 .contact-cta { margin-top: var(--space-6); border-color: var(--ink-inverse); color: var(--ink-inverse); }
 .contact-cta:hover { background: var(--ink-inverse); color: var(--ink); }
 

@@ -38,6 +38,9 @@ export default function Contact() {
               <span className="status-dot" aria-hidden="true" />
               Open to new roles
             </p>
+            <p className="contact-invite">
+              Have a role or project in mind? I&apos;d like to hear about it.
+            </p>
             <div className="section-head">
               <span className="idx">06</span>
               <h2>Contact</h2>
