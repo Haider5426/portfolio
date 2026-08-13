@@ -468,8 +468,42 @@ ul.log-list li {
 }
 .proj-results { flex: 0 0 100%; margin-top: var(--space-4); min-width: 0; }
 
-#pf-data:checked ~ .proj-results [data-tracks]:not([data-tracks~="data"]) { display: none; }
-#pf-sw:checked   ~ .proj-results [data-tracks]:not([data-tracks~="sw"])   { display: none; }
+/* Filtering itself stays plain CSS (works with no JS at all). The fade +
+   scale is a pure enhancement: .proj-results [data-tracks] picks up a
+   transition, and allow-discrete defers the actual display:none until
+   after it plays. @starting-style is scoped under .is-interactive (added
+   by ProjectFilterMotion.tsx one tick after mount) so cards reappearing
+   from a filter animate in, but nothing animates on the initial page load
+   itself — that's what the scroll-reveal system (see SCROLL REVEAL) owns
+   for these same cards. */
+.proj-results [data-tracks] {
+  transition: opacity 200ms var(--ease), transform 200ms var(--ease),
+              display 200ms allow-discrete;
+}
+#pf-data:checked ~ .proj-results [data-tracks]:not([data-tracks~="data"]),
+#pf-sw:checked   ~ .proj-results [data-tracks]:not([data-tracks~="sw"]) {
+  opacity: 0;
+  transform: scale(0.94);
+  display: none;
+}
+/* Unconditional on purpose: @starting-style only has an effect at the exact
+   moment an element's display flips from none, so this only ever plays for
+   a card actually re-entering — never for one that was already visible. */
+@starting-style {
+  .is-interactive .proj-results [data-tracks] {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .proj-results [data-tracks] {
+    transition: opacity 150ms linear, display 150ms allow-discrete;
+  }
+  @starting-style {
+    .is-interactive .proj-results [data-tracks] { opacity: 0; }
+  }
+}
 
 .sr-only {
   position: absolute;

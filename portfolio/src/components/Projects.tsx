@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import Link from "next/link";
 import { PROJECTS, type Project } from "@/lib/projects";
 import { revealDelay } from "@/lib/reveal";
+import ProjectFilterMotion from "@/components/ProjectFilterMotion";
 
 const FILTERS = [
   { id: "pf-all", label: "All" },
@@ -74,6 +75,7 @@ export default function Projects() {
         </p>
 
         <fieldset className="projects-filterable">
+          <ProjectFilterMotion />
           <legend className="sr-only">Filter projects by track</legend>
           {FILTERS.map((f, i) => (
             <Fragment key={f.id}>
