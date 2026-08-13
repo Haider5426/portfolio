@@ -1435,3 +1435,30 @@ p.lede {
     transform: none;
   }
 }
+
+/* ==========================================================================
+   SCROLL REVEAL
+   One consistent fade + small upward translate, triggered as each section
+   or card crosses into the viewport (see ScrollReveal.tsx). Gated by
+   .js-reveal on <html> — set by a blocking inline script before first
+   paint — so content stays visible by default if JS never runs at all.
+   ========================================================================== */
+
+.js-reveal .reveal-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 450ms var(--ease), transform 450ms var(--ease);
+  transition-delay: var(--reveal-up-delay, 0ms);
+}
+.reveal-up.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal .reveal-up {
+    transform: none;
+    transition: opacity 200ms linear;
+    transition-delay: 0ms;
+  }
+}

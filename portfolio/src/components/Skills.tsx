@@ -1,3 +1,5 @@
+import { revealDelay } from "@/lib/reveal";
+
 const SKILL_GROUPS = [
   {
     track: "data",
@@ -35,16 +37,21 @@ export default function Skills() {
   return (
     <section id="skills">
       <div className="wrap">
-        <div className="section-head">
+        <div className="section-head reveal-up">
           <span className="idx">04</span>
           <h2>Skills</h2>
         </div>
-        <p className="section-sub">
+        <p className="section-sub reveal-up">
           Grouped the way I actually use them, not just listed.
         </p>
         <div className="skill-grid">
-          {SKILL_GROUPS.map((group) => (
-            <div className="skill-group" data-track={group.track} key={group.title}>
+          {SKILL_GROUPS.map((group, i) => (
+            <div
+              className="skill-group reveal-up"
+              style={revealDelay(i)}
+              data-track={group.track}
+              key={group.title}
+            >
               <h3>{group.title}</h3>
               <div className="chip-row">
                 {group.chips.map((chip) => (

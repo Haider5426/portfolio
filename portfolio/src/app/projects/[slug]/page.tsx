@@ -87,7 +87,7 @@ export default async function CaseStudyPage(
             />
           )}
 
-          <section className="case-section">
+          <section className="case-section reveal-up">
             <h2>
               <span className="case-idx">01</span> Problem
             </h2>
@@ -96,7 +96,7 @@ export default async function CaseStudyPage(
             ))}
           </section>
 
-          <section className="case-section">
+          <section className="case-section reveal-up">
             <h2>
               <span className="case-idx">02</span> Approach
             </h2>
@@ -107,7 +107,7 @@ export default async function CaseStudyPage(
             </ul>
           </section>
 
-          <section className="case-section">
+          <section className="case-section reveal-up">
             <h2>
               <span className="case-idx">03</span> Architecture
             </h2>
@@ -121,7 +121,7 @@ export default async function CaseStudyPage(
             </ol>
           </section>
 
-          <section className="case-section">
+          <section className="case-section reveal-up">
             <h2>
               <span className="case-idx">04</span> Result
             </h2>
@@ -135,7 +135,7 @@ export default async function CaseStudyPage(
             </div>
           </section>
 
-          <section className="case-section">
+          <section className="case-section reveal-up">
             <h2>
               <span className="case-idx">05</span> Stack
             </h2>

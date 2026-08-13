@@ -32,7 +32,7 @@ export default function Contact() {
   return (
     <footer id="contact">
       <div className="wrap">
-        <div className="contact-box">
+        <div className="contact-box reveal-up">
           <div className="contact-intro">
             <p className="status-chip">
               <span className="status-dot" aria-hidden="true" />

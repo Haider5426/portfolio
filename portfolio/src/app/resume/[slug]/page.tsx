@@ -67,7 +67,7 @@ export default async function ResumePage(props: PageProps<"/resume/[slug]">) {
             </header>
 
             {resume.sections.map((section) => (
-              <section className="resume-section" key={section.heading}>
+              <section className="resume-section reveal-up" key={section.heading}>
                 <h2>{section.heading}</h2>
 
                 {section.body?.map((p) => (

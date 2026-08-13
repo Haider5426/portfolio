@@ -1,3 +1,5 @@
+import { revealDelay } from "@/lib/reveal";
+
 const STATS = [
   {
     stat: "−70% time",
@@ -25,16 +27,20 @@ export default function Ledger() {
   return (
     <section id="achievements" className="alt">
       <div className="wrap">
-        <div className="section-head">
+        <div className="section-head reveal-up">
           <span className="idx">01</span>
           <h2>Ledger</h2>
         </div>
-        <p className="section-sub">
+        <p className="section-sub reveal-up">
           The numbers behind five years of analytics and engineering work.
         </p>
         <div className="stat-grid">
-          {STATS.map((s) => (
-            <div className="stat-tile" key={s.text}>
+          {STATS.map((s, i) => (
+            <div
+              className="stat-tile reveal-up"
+              style={revealDelay(i)}
+              key={s.text}
+            >
               <span className="stat-tile-num">{s.stat}</span>
               <p className="stat-tile-text">{s.text}</p>
             </div>

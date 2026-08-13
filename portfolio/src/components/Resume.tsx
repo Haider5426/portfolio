@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { RESUMES } from "@/lib/resumes";
+import { revealDelay } from "@/lib/reveal";
 
 const BLURB: Record<string, string> = {
   "data-analyst":
@@ -12,21 +13,22 @@ export default function Resume() {
   return (
     <section id="resume">
       <div className="wrap">
-        <div className="section-head">
+        <div className="section-head reveal-up">
           <span className="idx">05</span>
           <h2>Résumé</h2>
         </div>
-        <p className="section-sub">
+        <p className="section-sub reveal-up">
           Two versions of the same five years, depending on which half of the
           pipeline you&rsquo;re hiring for.
         </p>
 
         <div className="resume-grid">
-          {RESUMES.map((r) => (
+          {RESUMES.map((r, i) => (
             <Link
               key={r.slug}
               href={`/resume/${r.slug}`}
-              className="card card-link resume-card"
+              className="card card-link resume-card reveal-up"
+              style={revealDelay(i)}
               data-track={r.slug === "data-analyst" ? "data" : "sw"}
             >
               <div className="card-top">

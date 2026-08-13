@@ -1,3 +1,5 @@
+import { revealDelay } from "@/lib/reveal";
+
 interface LogEntry {
   role: string;
   org: string;
@@ -43,17 +45,21 @@ export default function Experience() {
   return (
     <section id="experience">
       <div className="wrap">
-        <div className="section-head">
+        <div className="section-head reveal-up">
           <span className="idx">02</span>
           <h2>Experience</h2>
         </div>
-        <p className="section-sub">
+        <p className="section-sub reveal-up">
           Three roles, one pattern: find the messy manual process, build the
           pipeline that replaces it.
         </p>
 
-        {ENTRIES.map((entry) => (
-          <div className="log-entry" key={entry.org}>
+        {ENTRIES.map((entry, i) => (
+          <div
+            className="log-entry reveal-up"
+            style={revealDelay(i)}
+            key={entry.org}
+          >
             <div className="log-head">
               <span className="log-role">{entry.role}</span>
               <span className="log-org">— {entry.org}</span>

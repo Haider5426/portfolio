@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, IBM_Plex_Mono } from "next/font/google";
+import ScrollReveal from "@/components/ScrollReveal";
 import "./globals.css";
 
 // IBM Plex Mono now covers a narrower job — small data labels, stats, and
@@ -74,10 +75,20 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
     >
       <body suppressHydrationWarning>
+        {/* Runs before any content below paints, so .reveal-up elements only
+            start hidden when something will actually reveal them again —
+            with JS disabled (or blocked), they're just visible from the
+            start instead of stuck at opacity:0. See globals.css. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `document.documentElement.classList.add("js-reveal")`,
+          }}
+        />
         <a href="#main" className="skip-link">
           Skip to content
         </a>
         {children}
+        <ScrollReveal />
         {/* Enables smooth scrolling only after the initial load finishes, so
             a direct hash-URL load (e.g. /#contact) uses the browser's plain
             instant jump instead of an animated scroll that in-flight layout
