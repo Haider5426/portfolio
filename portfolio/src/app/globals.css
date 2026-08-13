@@ -1463,6 +1463,20 @@ p.lede {
 .reveal[data-reveal="4"] { --reveal-i: 2; }
 .reveal[data-reveal="5"] { --reveal-i: 3; }
 
+/* Opacity-only entrance for the portrait: no transform, since a translate on
+   a box this large has enough time-to-run (competing with the aurora's
+   blur+animation load) that Chrome's shift observer can score it as CLS.
+   Slotted between the lede (55ms) and the stats (165ms). */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.reveal-fade {
+  opacity: 0;
+  animation: fade-in 260ms var(--ease) forwards;
+  animation-delay: 110ms;
+}
+
 /* Transform-only entrance for elements that must not be held at opacity 0 —
    an invisible element does not count as painted, which would delay LCP. */
 @keyframes settle-motion {
@@ -1477,7 +1491,8 @@ p.lede {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal,
-  .reveal-motion {
+  .reveal-motion,
+  .reveal-fade {
     animation: none;
     opacity: 1;
     transform: none;

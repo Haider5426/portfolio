@@ -53,11 +53,12 @@ export default function Hero() {
           {/* Eager (it is above the fold) but deliberately NOT preloaded: the
               headline is the LCP element, and a high-priority image preload
               would compete with the font on the critical path.
-              No entrance transform here (unlike the headline): on a busier
-              main thread — e.g. with the aurora's blur+animation load — a
-              transform on this large a box has enough time-to-run that
-              Chrome's shift observer picks it up and scores it as CLS. */}
-          <figure className="hero-portrait">
+              reveal-fade (opacity only, no transform) here instead of
+              reveal-motion: on a busier main thread — e.g. with the aurora's
+              blur+animation load — a transform on this large a box has
+              enough time-to-run that Chrome's shift observer picks it up
+              and scores it as CLS. */}
+          <figure className="hero-portrait reveal-fade">
             <div className="portrait-frame">
               <Image
                 src={portrait}
