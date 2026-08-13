@@ -300,11 +300,19 @@ section.alt {
   gap: var(--space-2);
   transition: background var(--dur-fast) var(--ease),
               color var(--dur-fast) var(--ease),
-              border-color var(--dur-fast) var(--ease);
+              border-color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
 }
-.btn:hover { background: var(--ink); color: var(--paper); }
+.btn:hover,
+.btn:focus-visible { background: var(--ink); color: var(--paper); transform: translateY(-1px); }
 .btn.primary { background: var(--signal); border-color: var(--signal); color: #fff; }
-.btn.primary:hover { background: var(--signal-strong); border-color: var(--signal-strong); }
+.btn.primary:hover,
+.btn.primary:focus-visible { background: var(--signal-strong); border-color: var(--signal-strong); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn { transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease); }
+  .btn:hover, .btn:focus-visible { transform: none; }
+}
 
 /* ==========================================================================
    LEDGER — a plain stat grid, not a bordered table
@@ -412,11 +420,12 @@ ul.log-list li {
   cursor: pointer;
   color: var(--ink-soft);
   transition: border-color var(--dur-fast) var(--ease),
-              color var(--dur-fast) var(--ease);
+              color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
   /* keeps the pill the same height whether it's a label or a button */
   line-height: var(--leading-snug);
 }
-.filter-btn:hover { border-color: var(--grid-strong); color: var(--ink); }
+.filter-btn:hover { border-color: var(--grid-strong); color: var(--ink); transform: translateY(-1px); }
 
 /* The radio itself is visually hidden but still focusable & announced. */
 .pf-input {
@@ -435,6 +444,14 @@ ul.log-list li {
 .pf-input:focus-visible + .filter-btn {
   outline: 3px solid var(--signal);
   outline-offset: 2px;
+  border-color: var(--grid-strong);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-btn { transition: border-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease); }
+  .filter-btn:hover, .pf-input:focus-visible + .filter-btn { transform: none; }
 }
 
 /* The radios, pills and results are all siblings inside one fieldset so the
@@ -483,8 +500,8 @@ ul.log-list li {
   gap: var(--space-3);
   box-shadow: var(--shadow-sm);
   transition: border-color var(--dur-fast) var(--ease),
-              transform var(--dur-med) var(--ease),
-              box-shadow var(--dur-med) var(--ease);
+              transform var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
 }
 .card:hover,
 .card-link:focus-visible {
@@ -591,7 +608,8 @@ ul.log-list li {
   margin-bottom: var(--space-10);
   transition: color var(--dur-fast) var(--ease);
 }
-.case-back:hover { color: var(--signal); }
+.case-back:hover,
+.case-back:focus-visible { color: var(--signal); }
 
 .case-head {
   border-left: 3px solid var(--signal);
@@ -721,7 +739,8 @@ ul.log-list li {
   font-weight: var(--weight-semi);
   transition: border-color var(--dur-fast) var(--ease);
 }
-.case-live:hover { border-color: var(--signal); }
+.case-live:hover,
+.case-live:focus-visible { border-color: var(--signal); }
 
 .arch-step {
   display: block;
@@ -867,7 +886,8 @@ footer { padding: var(--section-y) 0 var(--space-12); }
 }
 
 .contact-cta { margin-top: var(--space-6); border-color: var(--ink-inverse); color: var(--ink-inverse); }
-.contact-cta:hover { background: var(--ink-inverse); color: var(--ink); }
+.contact-cta:hover,
+.contact-cta:focus-visible { background: var(--ink-inverse); color: var(--ink); }
 
 .contact-links {
   display: flex;
@@ -896,7 +916,8 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   transition: border-color var(--dur-fast) var(--ease);
   align-self: flex-start;
 }
-.contact-links a:hover { border-color: var(--ink-inverse); }
+.contact-links a:hover,
+.contact-links a:focus-visible { border-color: var(--ink-inverse); }
 .contact-links a:focus-visible { outline-color: var(--ink-inverse); }
 
 .site-foot {
@@ -929,7 +950,8 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   text-decoration: none;
   transition: color var(--dur-fast) var(--ease);
 }
-.foot-links a:hover { color: var(--signal); }
+.foot-links a:hover,
+.foot-links a:focus-visible { color: var(--signal); }
 
 /* Contact panel stacks cleanly on narrow screens. */
 @media (max-width: 700px) {
@@ -1011,8 +1033,14 @@ footer { padding: var(--section-y) 0 var(--space-12); }
   margin: 0;
   line-height: var(--leading-snug);
 }
-.resume-contact a { color: var(--ink-soft); text-decoration: none; border-bottom: 1px solid var(--grid); }
-.resume-contact a:hover { color: var(--signal); border-color: var(--signal); }
+.resume-contact a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--grid);
+  transition: color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+}
+.resume-contact a:hover,
+.resume-contact a:focus-visible { color: var(--signal); border-color: var(--signal); }
 
 .resume-section { padding: 0; margin-bottom: var(--space-8); }
 .resume-section:last-child { margin-bottom: 0; }
