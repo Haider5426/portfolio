@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PrintButton from "@/components/PrintButton";
 import { CONTACT, RESUMES, getResume } from "@/lib/resumes";
+import { navTransitionMap } from "@/lib/viewTransition";
 
 export function generateStaticParams() {
   return RESUMES.map((r) => ({ slug: r.slug }));
@@ -28,12 +30,13 @@ export default async function ResumePage(props: PageProps<"/resume/[slug]">) {
   const other = RESUMES.find((r) => r.slug !== resume.slug);
 
   return (
+    <ViewTransition enter={navTransitionMap} exit={navTransitionMap} default="none">
     <div className="page resume-page">
       <main id="main">
         <div className="wrap resume">
           {/* Screen-only controls */}
           <div className="resume-bar no-print">
-            <Link href="/#resume" className="case-back">
+            <Link href="/#resume" className="case-back" transitionTypes={["nav-back"]}>
               ← Back to site
             </Link>
             <div className="resume-bar-actions">
@@ -121,5 +124,6 @@ export default async function ResumePage(props: PageProps<"/resume/[slug]">) {
         </div>
       </main>
     </div>
+    </ViewTransition>
   );
 }

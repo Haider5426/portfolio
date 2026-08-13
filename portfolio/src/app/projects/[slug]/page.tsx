@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { ViewTransition } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CASE_STUDIES, getProjectBySlug } from "@/lib/projects";
+import { navTransitionMap } from "@/lib/viewTransition";
 
 export function generateStaticParams() {
   return CASE_STUDIES.map((p) => ({ slug: p.slug }));
@@ -39,10 +41,11 @@ export default async function CaseStudyPage(
   const track = project.tracks[0];
 
   return (
+    <ViewTransition enter={navTransitionMap} exit={navTransitionMap} default="none">
     <div className="page case-page">
       <main>
         <article className="wrap case">
-          <Link href="/#projects" className="case-back">
+          <Link href="/#projects" className="case-back" transitionTypes={["nav-back"]}>
             ← All projects
           </Link>
 
@@ -168,5 +171,6 @@ export default async function CaseStudyPage(
         </article>
       </main>
     </div>
+    </ViewTransition>
   );
 }

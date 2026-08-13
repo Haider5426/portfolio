@@ -29,6 +29,7 @@ export default function Resume() {
               href={`/resume/${r.slug}`}
               className="card card-link resume-card reveal-up"
               style={revealDelay(i)}
+              transitionTypes={["nav-forward"]}
               data-track={r.slug === "data-analyst" ? "data" : "sw"}
             >
               <div className="card-top">
