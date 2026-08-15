@@ -42,7 +42,6 @@ function ProjectCard({
       className={`${className} card-link`}
       href={`/projects/${project.slug}`}
       style={style}
-      transitionTypes={["nav-forward"]}
       {...attrs}
     >
       <CardBody project={project} />
